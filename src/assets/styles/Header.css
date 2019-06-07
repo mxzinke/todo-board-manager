@@ -1,0 +1,29 @@
+.App-Header {
+    background-color: #282c34;
+    min-height: 50px;
+    align-items: left;
+    color: white;
+}
+
+.App-Header #title {
+    font-size: 40px;
+    position: relative;
+    top: -5px;
+}
+
+.App-Header .logo {
+    animation: logo-spin infinite 5s linear;
+    height: 50px;
+    position: relative;
+    top:5px;
+    pointer-events: none;
+}
+
+@keyframes logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
