@@ -44,48 +44,33 @@ export default class Topic extends React.Component {
      * @param elementId The Id of the Id which want to move
      * @return true/false → if successful or not */
     changeStateOfElement(elementId) {
-        var state = null;
-        var element = null;
         var todoElements = this.state;
-        var elementIndex = null;
 
-        if (todoElements.open.some(e => e.id === elementId)) {
-            state = false;
-            element = todoElements.open.find(e => e.id === elementId);
-            elementIndex = todoElements.open.indexOf(element);
-        } else if (todoElements.done.some(e => e.id === elementId)) {
-            state = true;
-            element = todoElements.done.find(e => e.id === elementId);
-            elementIndex = todoElements.done.indexOf(element);
-        } else {
-            throw new Error("The Element searching for was not found!");
-        }
-
-        console.log("ElementIndex", element);
+        var state = todoElements.done.some(e => e.id === elementId);
+        var selElem = (state) ? todoElements.done : todoElements.open;
+        var elementIx = selElem.findIndex(el => el.id === elementId);
+        var element = selElem[elementIx];
 
         var highestIx = 0;
 
         if (!state) {
-            // fixing up the index
             todoElements.done.forEach(e => {
                 if (e.index > highestIx) { highestIx = e.index }
             });
             element.index = highestIx;
             
-
-            // Add to new list and delete old element
             todoElements.done.push(element);
-            delete todoElements.open[elementIndex];
+            delete todoElements.open[elementIx];
+            todoElements.open = todoElements.open.filter((n) => { return n !== undefined } )
         } else {
-            // fixing up the index
             todoElements.open.forEach(e => {
                 if (e.index > highestIx) { highestIx = e.index }
             });
             element.index = highestIx;
 
-            // Add to new list and delete old element
             todoElements.open.push(element);
-            delete todoElements.done[elementIndex];
+            delete todoElements.done[elementIx];
+            todoElements.done = todoElements.done.filter((n) => { return n !== undefined } )
         }
 
         this.setState(todoElements);
@@ -94,7 +79,7 @@ export default class Topic extends React.Component {
     render() {
         return (
             <div className="Topic" id={this.componentId}>
-                <div className="TopicTitle">{this.title}</div>
+                <div className="TopicTitle">{this.state.title}</div>
                 <div className="ToDoElements openToDo">
                     <h2>Open ToDos:</h2>
                     {
