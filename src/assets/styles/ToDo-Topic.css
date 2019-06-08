@@ -37,7 +37,7 @@
     font-size: 18px;
 }
 
-#doneToDo {
+.doneToDo {
     color: #888;
     z-index:0;
 }
