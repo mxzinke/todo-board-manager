@@ -14,7 +14,7 @@ function App() {
       <Header name="ToDo Manager Board (build with React)" />
       <div className="Topics">
         <Topic id="01234567" />
-        <Topic id="01234567" />
+        <Topic id="25151656" />
       </div>
     </div>
   );
