@@ -1,9 +1,16 @@
+.TopicWrapper {
+    display: table-cell;
+    padding: 0 20px;
+    max-height: 85vh;
+}
+
 .Topic {
     min-width: 400px;
     display:table-cell;
-    padding: 0 20px;
     text-align: center;
-    height: 80vh;
+    -webkit-box-shadow: 0px 0px 5px 5px rgba(238,238,238,1);
+    -moz-box-shadow: 0px 0px 5px 5px rgba(238,238,238,1);
+    box-shadow: 0px 0px 20px 0px rgba(238,238,238,1);
 }
 
 .TopicTitle {
@@ -14,9 +21,6 @@
     background-color:rgb(248, 248, 248);
     border: 1px solid rgb(197, 197, 197);
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 5px 5px rgba(238,238,238,1);
-    -moz-box-shadow: 0px 0px 5px 5px rgba(238,238,238,1);
-    box-shadow: 0px 0px 20px 0px rgba(238,238,238,1);
     z-index: 100;
 }
 
@@ -40,4 +44,14 @@
 .doneToDo {
     color: #888;
     z-index:0;
+}
+
+.TopicForm {
+    background-color:rgb(248, 248, 248);
+    border: 1px solid rgb(197, 197, 197);
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 0px 5px 5px rgba(238,238,238,1);
+    -moz-box-shadow: 0px 0px 5px 5px rgba(238,238,238,1);
+    box-shadow: 0px 0px 20px 0px rgba(238,238,238,1);
+    margin-top: 20px;
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import '../assets/styles/ToDo-Element.css';
+import '../assets/styles/ToDoElement.css';
 
 /* @class ToDo-Element Component
  * @param id Out of the API-Database and reused in DOM

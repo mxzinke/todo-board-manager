@@ -1,0 +1,12 @@
+.AddForm {
+    border:none;
+    padding: 12px 12px;
+}
+
+.InvisibleInput {
+    background-color: transparent;
+    border: none;
+    color: #888;
+    font-size: 18px;
+}
+

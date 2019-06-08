@@ -1,6 +1,7 @@
 import React from 'react';
-import ToDoElement from './ToDo-Element';
-import '../assets/styles/ToDo-Topic.css';
+import ToDoElement from './ToDoElement';
+import '../assets/styles/Topic.css';
+import ToDoAddForm from './ToDoAddForm';
 //import Api from '../Api';
 
 /* @class Generating the topic based overview of the To-Do's 
@@ -72,21 +73,35 @@ export default class Topic extends React.Component {
         this.setState(todoElements);
     }
 
+    /* @function Adding a Element to the open*/
+    addElement() {
+
+    }
+
+    delElement() {
+
+    }
+
     render() {
         return (
-            <div className="Topic" id={this.componentId}>
-                <div className="TopicTitle">{this.state.title}</div>
-                <div className="ToDoElements openToDo">
-                    <h2>Open ToDos:</h2>
-                    {
-                        this.state.open.map(
-                            element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)} key={element.id} id={element.id} label={element.label} state={false} />)}
+            <div className="TopicWrapper">
+                <div className="Topic" id={this.componentId}>
+                    <div className="TopicTitle">{this.state.title}</div>
+                    <div className="ToDoElements openToDo">
+                        <h2>Open ToDos:</h2>
+                        {
+                            this.state.open.map(
+                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)} key={element.id} id={element.id} label={element.label} state={false} />)}
+                    </div>
+                    <div className="ToDoElements doneToDo">
+                        <h2>Done ToDos:</h2>
+                        {
+                            this.state.done.map(
+                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)} key={element.id} id={element.id} label={element.label} state={true} />)}
+                    </div>
                 </div>
-                <div className="ToDoElements doneToDo">
-                    <h2>Done ToDos:</h2>
-                    {
-                        this.state.done.map(
-                            element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)} key={element.id} id={element.id} label={element.label} state={true} />)}
+                <div className="TopicForm">
+                    <ToDoAddForm />
                 </div>
             </div>
         );
