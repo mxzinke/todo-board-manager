@@ -1,7 +1,7 @@
 .Topic {
-    width: 500px;
+    min-width: 400px;
     display:table-cell;
-    padding: 0 25px;
+    padding: 0 20px;
     text-align: center;
     height: 80vh;
 }

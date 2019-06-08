@@ -3,6 +3,9 @@
 }
 
 .Topics {
+  position: absolute;
+  top: 50px;
   display: table;
-  margin: 25px 30px;
+  margin: 25px 0;
+  overflow-x: auto;
 }
