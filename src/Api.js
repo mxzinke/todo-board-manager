@@ -1,12 +1,13 @@
-import connectionConfig from '../api-config.json';
-
-export var API = new ApiConnector( JSON.parse(connectionConfig) );
+import connectionConfig from './api-config';
 
 /* @class The Class for Connection to the RESTful-API */
-class ApiConnector {
-     constructor(params) {
-        this.address = params.apiUrl;
-        this.defaultMethod = params.defaultMethod;
+export default class ApiSocket {
+     constructor() {
+        var config = JSON.parse(connectionConfig);
+        this.address = config.apiUrl;
+        this.defaultMethod = config.defaultMethod;
+
+        // TODO: After loading the config -> checking if connection is available
     }
 
     /* @function Transpile the JSON Format into an Object
