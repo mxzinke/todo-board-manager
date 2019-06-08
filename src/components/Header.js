@@ -5,6 +5,7 @@ import '../assets/styles/Header.css';
 /* @class Component of the Header
  * @param name Label for generating the Title */
 export default class Header extends React.Component {
+    
     constructor(params) {
         super(params);
         this.title = params.name;
