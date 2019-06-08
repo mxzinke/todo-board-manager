@@ -11,13 +11,7 @@ export default class Topic extends React.Component {
         super(params);
         this.componentId = "topic-" + params.id;
         this.topicId = params.id;
-    }
-
-    getAllOpenToDoElements() {
-        return this._requestOpenToDos().forEach(element =>  {
-            return <ToDoElement id={element.id} label={element.label} state={false} />
-        })
-    }
+    }  
 
     render() {
         return (
@@ -25,17 +19,11 @@ export default class Topic extends React.Component {
                 <div className="TopicTitle">{this._getTitle()}</div>
                 <div className="ToDoElements" id="openToDo">
                     <h2>Open ToDo's:</h2>
-                    <ToDoElement id={1} label={"Das ist nicht entfernbar"} state={false} />
-                    { this.getAllOpenToDoElements() }
+                    { this._requestOpenToDos().map(element => <ToDoElement id={element.id} label={element.label} state={false} />) }
                 </div>
                 <div className="ToDoElements" id="doneToDo">
                     <h2>Done ToDo's:</h2>
-                    <ToDoElement id={2} label={"Das ist nicht entfernbar"} state={true} />
-                    {
-                        this._requestClosedToDos().forEach(element =>  {
-                            return(<ToDoElement id={element.id} label={element.label} state={true} />);
-                        })
-                    }
+                    { this._requestDoneToDos().map(element => <ToDoElement id={element.id} label={element.label} state={true} />) }
                 </div>
             </div>
         );
@@ -48,7 +36,7 @@ export default class Topic extends React.Component {
         var apiAnswer = [
             {
                 id: 124223322344,
-                label: "Improve Webdesign",
+                label: "Improve Design",
                 index: 0
             },
             {
@@ -69,7 +57,7 @@ export default class Topic extends React.Component {
     }
 
     /* private @function Loads all done ToDo's by the actual topic from API */
-    _requestClosedToDos() {
+    _requestDoneToDos() {
         return [
             {
                 id: 212444324344,
