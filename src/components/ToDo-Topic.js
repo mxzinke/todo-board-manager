@@ -54,18 +54,14 @@ export default class Topic extends React.Component {
         var highestIx = 0;
 
         if (!state) {
-            todoElements.done.forEach(e => {
-                if (e.index > highestIx) { highestIx = e.index }
-            });
+            todoElements.done.forEach(e => { highestIx = (e.index > highestIx) ? e.index : highestIx });
             element.index = highestIx;
             
             todoElements.done.push(element);
             delete todoElements.open[elementIx];
             todoElements.open = todoElements.open.filter((n) => { return n !== undefined } )
         } else {
-            todoElements.open.forEach(e => {
-                if (e.index > highestIx) { highestIx = e.index }
-            });
+            todoElements.open.forEach(e => { highestIx = (e.index > highestIx) ? e.index : highestIx });
             element.index = highestIx;
 
             todoElements.open.push(element);
