@@ -13,22 +13,24 @@ export default class Topic extends React.Component {
         this.topicId = params.id;
     }
 
+    getAllOpenToDoElements() {
+        return this._requestOpenToDos().forEach(element =>  {
+            return <ToDoElement id={element.id} label={element.label} state={false} />
+        })
+    }
+
     render() {
         return (
             <div className="Topic" id={this.componentId}>
                 <div className="TopicTitle">{this._getTitle()}</div>
                 <div className="ToDoElements" id="openToDo">
                     <h2>Open ToDo's:</h2>
-                    <ToDoElement id={1} label={"Das ist nicht entfernbar"} />
-                    {
-                        this._requestOpenToDos().forEach(element =>  {
-                            return(<ToDoElement id={element.id} label={element.label} state={false} />);
-                        })
-                    }
+                    <ToDoElement id={1} label={"Das ist nicht entfernbar"} state={false} />
+                    { this.getAllOpenToDoElements() }
                 </div>
                 <div className="ToDoElements" id="doneToDo">
                     <h2>Done ToDo's:</h2>
-                    <ToDoElement id={2} label={"Das ist nicht entfernbar"} />
+                    <ToDoElement id={2} label={"Das ist nicht entfernbar"} state={true} />
                     {
                         this._requestClosedToDos().forEach(element =>  {
                             return(<ToDoElement id={element.id} label={element.label} state={true} />);
