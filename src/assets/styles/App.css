@@ -2,4 +2,7 @@
   text-align: left;
 }
 
-
+.Topics {
+  display: table;
+  margin: 25px 30px;
+}
