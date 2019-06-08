@@ -15,7 +15,7 @@ export default class ToDoAddForm extends React.Component {
         return (
             <div className="AddForm">
                 <input className="InvisibleInput" type="text" placeholder="What do you have to do?"></input>
-                <button type="submit" onClick={ () => this.onSubmitHandler() }></button>
+                <button className="AddButton" type="submit" onClick={ () => this.onSubmitHandler() }>+</button>
             </div>
         )
     }

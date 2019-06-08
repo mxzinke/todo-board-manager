@@ -8,13 +8,13 @@
     top:0;
 }
 
-.App-Header #title {
+.App-Header .Title {
     font-size: 40px;
     position: relative;
     top: -12px;
 }
 
-.App-Header .logo {
+.App-Header .Logo {
     animation: logo-spin infinite 5s linear;
     height: 50px;
     position: relative;

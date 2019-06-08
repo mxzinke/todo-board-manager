@@ -14,8 +14,8 @@ export default class Header extends React.Component {
     render() {
         return (
         <header className="App-Header">
-            <img src={logo} className="logo" alt="logo" />
-            <span id="title">{this.title}</span>
+            <img src={logo} className="Logo" alt="logo" />
+            <span className="Title">{this.title}</span>
         </header>
       );
     }
