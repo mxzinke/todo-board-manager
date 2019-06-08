@@ -56,14 +56,14 @@ export default class Topic extends React.Component {
 
         if (!state) {
             todoElements.done.forEach(e => { highestIx = (e.index > highestIx) ? e.index : highestIx });
-            element.index = highestIx;
+            element.index = highestIx + 1;
             
             todoElements.done.push(element);
             delete todoElements.open[elementIx];
             todoElements.open = todoElements.open.filter((n) => { return n !== undefined } )
         } else {
             todoElements.open.forEach(e => { highestIx = (e.index > highestIx) ? e.index : highestIx });
-            element.index = highestIx;
+            element.index = highestIx + 1;
 
             todoElements.open.push(element);
             delete todoElements.done[elementIx];
@@ -74,8 +74,29 @@ export default class Topic extends React.Component {
     }
 
     /* @function Adding a Element to the open*/
-    addElement() {
+    addElement(newLabel) {
+        var todoElements = this.state;
 
+        var highestIx = 0;
+        todoElements.open.forEach(e => { highestIx = (e.index > highestIx) ? e.index : highestIx });
+
+        var checkNewId = (nid) => {return (todoElements.open.some(e => e.id === nid) || todoElements.done.some(e => e.id === nid) || nid === 0) }
+
+        var min = 100000000000;
+        var max = 999999999999;
+        var nid = 0;
+        do {
+            nid = Math.round(Math.random() * (max - min)) + min;
+        } while (checkNewId(nid));
+
+        var newElement = {
+            id: nid,
+            label: newLabel,
+            index: highestIx + 1
+        }
+
+        todoElements.open.push(newElement);
+        this.setState(todoElements);
     }
 
     delElement() {
@@ -101,7 +122,7 @@ export default class Topic extends React.Component {
                     </div>
                 </div>
                 <div className="TopicForm">
-                    <ToDoAddForm />
+                    <ToDoAddForm onAddElement={ (label) => this.addElement(label) }/>
                 </div>
             </div>
         );
