@@ -1,6 +1,7 @@
 import React from 'react';
 import ToDoElement from './ToDoElement';
 import '../assets/styles/Topic.css';
+import deleteIcon from '../assets/icons/delete.svg';
 import ToDoAddForm from './ToDoAddForm';
 //import Api from '../Api';
 
@@ -39,11 +40,12 @@ export default class Topic extends React.Component {
                 }
             ]
         };
+        this.onDeleteHandler = params.onDeleteHandler;
     }
 
     /* @function Changing the State of a Element: done ←→ open
      * @param elementId The Id of the Id which want to move
-     * @return true/false → if successful or not */
+     * This function is causing a new state and re-rendering */
     changeStateOfElement(elementId) {
         var todoElements = this.state;
 
@@ -73,7 +75,9 @@ export default class Topic extends React.Component {
         this.setState(todoElements);
     }
 
-    /* @function Adding a Element to the open*/
+    /* @function Adding a new ToDo Element to the "Open"-Field
+     * @param newLabel the new Label for the To-Do-Element
+     * This function is causing a new state and re-rendering */
     addElement(newLabel) {
         var todoElements = this.state;
 
@@ -99,26 +103,58 @@ export default class Topic extends React.Component {
         this.setState(todoElements);
     }
 
-    delElement() {
+    /* @function Deleting a ToDo-Element
+     * @param elementId The ID of the ToDoElement of the topics list
+     * This function is causing a new state and re-rendering */
+    delElement(elementId) {
+        var todoElements = this.state;
+        var state = todoElements.done.some(e => e.id === elementId);
+        var selElem = (state) ? todoElements.done : todoElements.open;
+        var elementIx = selElem.findIndex(el => el.id === elementId);
 
+        if (state) {
+            delete todoElements.done[elementIx];
+            todoElements.done = todoElements.done.filter((n) => { return n !== undefined } );
+        } else {
+            delete todoElements.open[elementIx];
+            todoElements.open = todoElements.open.filter((n) => { return n !== undefined } );
+        }
+
+        this.setState(todoElements);
+    }
+
+    /* @function Changing the title of the Topic
+     * @param evt The Event causing this action
+     * This function is causing a new state and re-rendering */
+    changeTitle(evt) {
+        var todoElements = this.state;
+        var newValue = evt.target.value;
+        
+        if (newValue.length <= 25) {
+            todoElements.title = newValue;
+            this.setState(todoElements);
+        }
     }
 
     render() {
         return (
             <div className="TopicWrapper">
                 <div className="Topic" id={this.componentId}>
-                    <div className="TopicTitle">{this.state.title}</div>
+                    <div className="TopicTitle">
+                        <button className="DeleteButton" type="submit" onClick={ () => this.deleteTopic() }><img src={deleteIcon} alt="Delete" /></button>
+                        <input className="InvisibleInput" onChange={ (evt) => this.changeTitle(evt) } value={ this.state.title } type="text" placeholder="Set a Titel" />
+                    </div>
                     <div className="ToDoElements openToDo">
                         <h2>Open ToDos:</h2>
                         {
                             this.state.open.map(
-                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)} key={element.id} id={element.id} label={element.label} state={false} />)}
+                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)} onDeleteHandler={ () => this.delElement(element.id) } key={element.id} id={element.id} label={element.label} state={false} />)}
                     </div>
                     <div className="ToDoElements doneToDo">
                         <h2>Done ToDos:</h2>
                         {
                             this.state.done.map(
-                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)} key={element.id} id={element.id} label={element.label} state={true} />)}
+                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)} onDeleteHandler={ () => this.delElement(element.id) } key={element.id} id={element.id} label={element.label} state={true} />)}
                     </div>
                 </div>
                 <div className="TopicForm">

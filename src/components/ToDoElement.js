@@ -1,5 +1,7 @@
-import React from 'react'
+import React from 'react';
+import deleteIcon from '../assets/icons/delete.svg';
 import '../assets/styles/ToDoElement.css';
+
 
 /* @class ToDo-Element Component
  * @param id Out of the API-Database and reused in DOM
@@ -13,6 +15,7 @@ export default class ToDoElement extends React.Component {
         this.label = params.label;
         this.status = Boolean(params.state);
         this.onChangeHandler = params.onChangeHandler;
+        this.onDeleteHandler = params.onDeleteHandler;
     }
 
     onCheckboxChange() {
@@ -22,7 +25,7 @@ export default class ToDoElement extends React.Component {
 
     render() {
         return (
-            <div className="ToDo-Element" id={"todo_" + this.key}>
+            <div className="ToDoElement" id={"todo_" + this.key}>
                 <label className="container">
                     { (this.status === true) ? <span className="done">{ this.label }</span> : <span className="open">{ this.label }</span> } 
                     { (this.status === true) ? 
@@ -30,6 +33,7 @@ export default class ToDoElement extends React.Component {
                     : <input type="checkbox" onChange={ event => this.onCheckboxChange() } /> }
 
                     <span className="checkmark" />
+                    <button className="DeleteButton" type="button" onClick={ () => this.onDeleteHandler() }><img src={deleteIcon} alt="Delete" /></button>
                 </label>
             </div>
         );

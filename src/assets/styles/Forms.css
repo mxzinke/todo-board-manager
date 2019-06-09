@@ -1,6 +1,9 @@
 .AddForm {
     border:none;
     padding: 12px 16px 12px 25px;
+    -webkit-box-shadow: 0px 0px 5px 5px rgb(37, 37, 37);
+    -moz-box-shadow: 0px 0px 5px 5px rgb(37, 37, 37);
+    box-shadow: 0px 0px 32px -20px rgb(37, 37, 37);
 }
 
 .AddForm .AddButton {
@@ -28,11 +31,20 @@
     transition: 100ms;
 }
 
+.DeleteButton {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    float: right;
+    z-index: 0;
+}
+
 .InvisibleInput {
     background-color: transparent;
     border: none;
     color: #000;
     font-size: 18px;
+    width: 310px;
 }
 
 .InvisibleInput::placeholder {
