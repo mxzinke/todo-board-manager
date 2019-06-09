@@ -141,7 +141,7 @@ export default class Topic extends React.Component {
             <div className="TopicWrapper">
                 <div className="Topic" id={this.componentId}>
                     <div className="TopicTitle">
-                        <button className="DeleteButton" type="submit" onClick={ () => this.deleteTopic() }><img src={deleteIcon} alt="Delete" /></button>
+                        <button className="DeleteButton" type="submit" onClick={ () => this.onDeleteHandler(this.topicId) }><img src={deleteIcon} alt="Delete" /></button>
                         <input className="InvisibleInput" onChange={ (evt) => this.changeTitle(evt) } value={ this.state.title } type="text" placeholder="Set a Titel" />
                     </div>
                     <div className="ToDoElements openToDo">

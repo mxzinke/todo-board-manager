@@ -5,22 +5,35 @@ export default class TopicHandler extends React.Component {
     
     constructor() {
         super();
-        this.state = [12345678, 25151656];
+        this.state = {
+            topics: [12345678, 25151656]
+        };
     }
 
     deleteTopic(topicId) {
-        var topics = this.state;
-        var topicIx = topics.indexOf(element => element === topicId);
+        var topics = this.state.topics;
+        var topicIx = topics.findIndex(e => e === topicId);
+
+        console.log("Delete the Topic", topicId, "With Index", topicIx);
+        console.log(topics);
         
-        delete topics[topicIx];
-        topics = topics.filter( n => { return n !== undefined } );
-        this.setState(topics);
+        if (topicIx !== -1) {
+            delete topics[topicIx];
+            topics = topics.filter( n => { return n !== undefined } );
+            this.setState({
+                topics: topics
+            });
+        } else {
+            throw new Error("The Topic could not be found in the in the state-list.");
+        }
+            
+        
     }
 
     render() {
         return (
             <div className="Topics">
-                {this.state.map(topicId => <Topic id={topicId} onDeleteHandler={ (topicId) => this.deleteTopic(topicId) } />)}
+                {this.state.topics.map(topicId => <Topic id={topicId} onDeleteHandler={ (topicId) => this.deleteTopic(topicId) } />)}
             </div>
         )
     }
