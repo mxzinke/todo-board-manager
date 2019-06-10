@@ -1,4 +1,5 @@
-/* @author Maximilian Zinke */
+/* The ToDo Manager Board
+ * @author Maximilian Zinke */
 
 import React from 'react';
 import './assets/styles/App.css';
@@ -7,6 +8,16 @@ import Header from './components/Header';
 import TopicHandler from './components/TopicHandler';
 //import Api from './Api';
 
+/* @function deleting all empty array fields
+ * @param array The array which 
+ * @return a new array (without empty fields */
+export function delEmptyArrayFields(array) {
+  var newArray = array.filter((element) => {
+    return (element !== undefined);
+  });
+
+  return newArray;
+}
 
 /* @important @function Root App Class */
 function App() {
