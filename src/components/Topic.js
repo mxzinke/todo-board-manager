@@ -137,24 +137,30 @@ export default class Topic extends React.Component {
     }
 
     render() {
+        var tid = this.topicId;
         return (
             <div className="TopicWrapper">
                 <div className="Topic" id={this.componentId}>
                     <div className="TopicTitle">
-                        <button className="DeleteButton" type="submit" onClick={ () => this.onDeleteHandler(this.topicId) }><img src={deleteIcon} alt="Delete" /></button>
-                        <input className="InvisibleInput" onChange={ (evt) => this.changeTitle(evt) } value={ this.state.title } type="text" placeholder="Set a Titel" />
+                        <button className="DeleteButton" type="submit" onClick={ () => this.onDeleteHandler(tid) }>
+                            <img src={deleteIcon} alt="Delete" />
+                        </button>
+                        <input className="InvisibleInput" onChange={ (evt) => this.changeTitle(evt) }
+                        value={ this.state.title } type="text" placeholder="Set a Title" />
                     </div>
                     <div className="ToDoElements openToDo">
                         <h2>Open ToDos:</h2>
                         {
                             this.state.open.map(
-                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)} onDeleteHandler={ () => this.delElement(element.id) } key={element.id} id={element.id} label={element.label} state={false} />)}
+                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)}
+                                onDeleteHandler={ () => this.delElement(element.id) } key={element.id} id={element.id} label={element.label} state={false} />)}
                     </div>
                     <div className="ToDoElements doneToDo">
                         <h2>Done ToDos:</h2>
                         {
                             this.state.done.map(
-                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)} onDeleteHandler={ () => this.delElement(element.id) } key={element.id} id={element.id} label={element.label} state={true} />)}
+                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)}
+                                onDeleteHandler={ () => this.delElement(element.id) } key={element.id} id={element.id} label={element.label} state={true} />)}
                     </div>
                 </div>
                 <div className="TopicForm">
