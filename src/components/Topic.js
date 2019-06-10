@@ -130,7 +130,7 @@ export default class Topic extends React.Component {
         var todoElements = this.state;
         var newValue = evt.target.value;
         
-        if (newValue.length <= 32) {
+        if (newValue.length <= 30) {
             todoElements.title = newValue;
             this.setState(todoElements);
         }
