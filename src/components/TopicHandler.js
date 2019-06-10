@@ -8,11 +8,11 @@ export default class TopicHandler extends React.Component {
         this.state = {
             topics: [
                 {
-                    id: 12345678,
+                    key: 12345678,
                     index: 0
                 },
                 {
-                    id: 25151656,
+                    key: 25151656,
                     index: 1
                 }
             ]
@@ -20,17 +20,15 @@ export default class TopicHandler extends React.Component {
     }
 
     /* @function Deleting one whole topic
-     * @param topicId The unique Id of the topic (saved in the this.state.topics)
+     * @param Topic The unique key of the topic (saved in the this.state.topics)
      * This function is causing a new state and re-rendering (if confirmed) */
-    deleteTopic(topicId) {
+    deleteTopic(topicKey) {
         if (!window.confirm("Do you really want to 𝗱𝗲𝗹𝗲𝘁𝗲 this Topic forever (a very long time)?")) {
             return null;
         }
-
-        console.log(topicId, this.state.topics);
-
+        
         var topics = this.state.topics;
-        var topicIx = topics.findIndex(e => e.id === topicId.id);
+        var topicIx = topics.findIndex(e => e.key === topicKey);
         
         if (topicIx !== -1) {
             delete topics[topicIx];
@@ -49,20 +47,20 @@ export default class TopicHandler extends React.Component {
     addTopic() {
         var topics = this.state.topics;
 
-        var checkNewId = (nid) => {return (topics.some(e => e.id === nid) || nid === 0) }
+        var checkNewKey = (newKey) => {return (topics.some(e => e.key === newKey) || newKey === 0) }
 
         var min = 10000000;
         var max = 99999999;
-        var nid = 0;
+        var newKey = 0;
         do {
-            nid = Math.round(Math.random() * (max - min)) + min;
-        } while (checkNewId(nid));
+            newKey = Math.round(Math.random() * (max - min)) + min;
+        } while (checkNewKey(newKey));
 
         var freeIx = 0
         topics.forEach(e => { freeIx = (e.index > freeIx) ? e.index : freeIx +1 });
 
         topics.push({
-            id: nid,
+            key: newKey,
             index: freeIx
         });
 
@@ -74,7 +72,8 @@ export default class TopicHandler extends React.Component {
     render() {
         return (
             <div className="Topics">
-                {this.state.topics.map(topicId => <Topic id={topicId} onDeleteHandler={ (topicId) => this.deleteTopic(topicId) } />)}
+                {this.state.topics.map( (topic) => <Topic key={"topic_" + topic.key} dataKey={topic.key}
+                    onDeleteHandler={ (tKey) => this.deleteTopic(tKey) } />)}
                 <button className="AddButton" type="submit" onClick={ () => this.addTopic() }>+</button>
             </div>
         )

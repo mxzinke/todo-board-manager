@@ -3,38 +3,39 @@ import ToDoElement from './ToDoElement';
 import '../assets/styles/Topic.css';
 import deleteIcon from '../assets/icons/delete.svg';
 import ToDoAddForm from './ToDoAddForm';
+import { delEmptyArrayFields } from '../App';
 //import Api from '../Api';
 
 /* @class Generating the topic based overview of the To-Do's 
- * @param key For generating DOM-Id and the ID for API-Request */
+ * @param key For generating DOM-key and the key for API-Request */
 export default class Topic extends React.Component {
 
     constructor(params) {
         super(params);
-        this.componentId = "topic_" + params.id;
-        this.topicId = params.id;
+        this.componentKey = "topic_" + params.key;
+        this.key = params.dataKey;
         this.state = {
             title: "The Title Project",
             open: [
                 {
-                    id: 124223322344,
+                    key: 124223322344,
                     label: "Improve Design",
                     index: 0
                 },
                 {
-                    id: 190929393912,
+                    key: 190929393912,
                     label: "Setup the RESTful-API",
                     index: 1
                 },
                 {
-                    id: 123929292992,
+                    key: 123929292992,
                     label: "Implement RESTful-API Access",
                     index: 2
                 }
             ],
             done: [
                 {
-                    id: 212444324344,
+                    key: 212444324344,
                     label: "Adding basic React Components",
                     index: 0
                 }
@@ -44,14 +45,15 @@ export default class Topic extends React.Component {
     }
 
     /* @function Changing the State of a Element: done ←→ open
-     * @param elementId The Id of the Id which want to move
+     * @param elementKey The key of the key which want to move
      * This function is causing a new state and re-rendering */
-    changeStateOfElement(elementId) {
+    changeStateOfElement(elementKey) {
         var todoElements = this.state;
 
-        var state = todoElements.done.some(e => e.id === elementId);
+        
+        var state = todoElements.done.some(e => e.key === elementKey);
         var selElem = (state) ? todoElements.done : todoElements.open;
-        var elementIx = selElem.findIndex(el => el.id === elementId);
+        var elementIx = selElem.findIndex(el => el.key === elementKey);
         var element = selElem[elementIx];
 
         var highestIx = 0;
@@ -62,14 +64,14 @@ export default class Topic extends React.Component {
             
             todoElements.done.push(element);
             delete todoElements.open[elementIx];
-            todoElements.open = todoElements.open.filter((n) => { return n !== undefined } )
+            todoElements.open = delEmptyArrayFields(todoElements.open);
         } else {
             todoElements.open.forEach(e => { highestIx = (e.index > highestIx) ? e.index : highestIx });
             element.index = highestIx + 1;
 
             todoElements.open.push(element);
             delete todoElements.done[elementIx];
-            todoElements.done = todoElements.done.filter((n) => { return n !== undefined } )
+            todoElements.done = delEmptyArrayFields(todoElements.done);
         }
 
         this.setState(todoElements);
@@ -84,17 +86,17 @@ export default class Topic extends React.Component {
         var highestIx = 0;
         todoElements.open.forEach(e => { highestIx = (e.index > highestIx) ? e.index : highestIx });
 
-        var checkNewId = (nid) => {return (todoElements.open.some(e => e.id === nid) || todoElements.done.some(e => e.id === nid) || nid === 0) }
+        var checkNewKey = (newKey) => {return (todoElements.open.some(e => e.key === newKey) || todoElements.done.some(e => e.key === newKey) || newKey === 0) }
 
         var min = 100000000000;
         var max = 999999999999;
-        var nid = 0;
+        var newKey = 0;
         do {
-            nid = Math.round(Math.random() * (max - min)) + min;
-        } while (checkNewId(nid));
+            newKey = Math.round(Math.random() * (max - min)) + min;
+        } while (checkNewKey(newKey));
 
         var newElement = {
-            id: nid,
+            key: newKey,
             label: newLabel,
             index: highestIx + 1
         }
@@ -104,20 +106,20 @@ export default class Topic extends React.Component {
     }
 
     /* @function Deleting a ToDo-Element
-     * @param elementId The ID of the ToDoElement of the topics list
+     * @param elementKey The key of the ToDoElement of the topics list
      * This function is causing a new state and re-rendering */
-    delElement(elementId) {
+    delElement(elementKey) {
         var todoElements = this.state;
-        var state = todoElements.done.some(e => e.id === elementId);
+        var state = todoElements.done.some(e => e.key === elementKey);
         var selElem = (state) ? todoElements.done : todoElements.open;
-        var elementIx = selElem.findIndex(el => el.id === elementId);
+        var elementIx = selElem.findIndex(el => el.key === elementKey);
 
         if (state) {
             delete todoElements.done[elementIx];
-            todoElements.done = todoElements.done.filter((n) => { return n !== undefined } );
+            todoElements.done = delEmptyArrayFields(todoElements.done);
         } else {
             delete todoElements.open[elementIx];
-            todoElements.open = todoElements.open.filter((n) => { return n !== undefined } );
+            todoElements.open = delEmptyArrayFields(todoElements.open);
         }
 
         this.setState(todoElements);
@@ -137,12 +139,14 @@ export default class Topic extends React.Component {
     }
 
     render() {
-        var tid = this.topicId;
+        var tKey = this.key;
+        var state = this.state;
+
         return (
             <div className="TopicWrapper">
-                <div className="Topic" id={this.componentId}>
+                <div className="Topic" id={this.componentKey}>
                     <div className="TopicTitle">
-                        <button className="DeleteButton" type="submit" onClick={ () => this.onDeleteHandler(tid) }>
+                        <button className="DeleteButton" type="submit" onClick={ () => this.onDeleteHandler(tKey) }>
                             <img src={deleteIcon} alt="Delete" />
                         </button>
                         <input className="InvisibleInput" onChange={ (evt) => this.changeTitle(evt) }
@@ -151,16 +155,20 @@ export default class Topic extends React.Component {
                     <div className="ToDoElements openToDo">
                         <h2>Open ToDos:</h2>
                         {
-                            this.state.open.map(
-                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)}
-                                onDeleteHandler={ () => this.delElement(element.id) } key={element.id} id={element.id} label={element.label} state={false} />)}
+                            state.open.map(
+                                element => <ToDoElement key={"todo_" + element.key} dataKey={element.key} onChangeHandler={() => this.changeStateOfElement(element.key)}
+                                onDeleteHandler={ () => this.delElement(element.key) }  label={element.label} state={false} />
+                            )
+                        }
                     </div>
                     <div className="ToDoElements doneToDo">
                         <h2>Done ToDos:</h2>
                         {
-                            this.state.done.map(
-                                element => <ToDoElement onChangeHandler={() => this.changeStateOfElement(element.id)}
-                                onDeleteHandler={ () => this.delElement(element.id) } key={element.id} id={element.id} label={element.label} state={true} />)}
+                            state.done.map(
+                                element => <ToDoElement key={"todo_" + element.key} dataKey={element.key} onChangeHandler={() => this.changeStateOfElement(element.key)}
+                                onDeleteHandler={ () => this.delElement(element.key) } label={element.label} state={true} />
+                            )
+                        }
                     </div>
                 </div>
                 <div className="TopicForm">
@@ -177,7 +185,7 @@ export default class Topic extends React.Component {
     syncToDoTopic() {
         // Create Algorithm for syncing the API with local container (also title!)
 
-        //var apiAnswer = Api.doRequest("topic/" + this.topicId + "?state=false", "GET");
-        //var apiAnswer = Api.doRequest("topic/" + this.topicId + "?state=false", "GET");
+        //var apiAnswer = Api.doRequest("topic/" + this.key + "?state=false", "GET");
+        //var apiAnswer = Api.doRequest("topic/" + this.key + "?state=false", "GET");
     }
 }
