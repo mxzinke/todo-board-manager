@@ -5,8 +5,8 @@
 }
 
 .Topic {
-    max-width: 400px;
-    min-width: 400px;
+    max-width: 450px;
+    min-width: 450px;
     display:table-cell;
     text-align: center;
     -webkit-box-shadow: 0px 0px 5px 5px rgb(37, 37, 37);
@@ -25,11 +25,14 @@
 .TopicTitle .InvisibleInput {
     padding: 7px 12px;
     font-size: 25px;
-    width: 95%;
+    width: 400px;
     text-align: center;
 }
 
 .TopicTitle .DeleteButton {
+    position: absolute;
+    top: 12px;
+    right: 4px;
     display: none;
 }
 

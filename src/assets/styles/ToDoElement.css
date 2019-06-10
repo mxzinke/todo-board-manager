@@ -80,7 +80,6 @@
 
 .ToDoElement .DeleteButton {
     display: none;
-    float: right;
 }
 
 .ToDoElement:hover .DeleteButton {
