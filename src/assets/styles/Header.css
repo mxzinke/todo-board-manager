@@ -16,7 +16,7 @@
 }
 
 .App-Header .Logo {
-    animation: logo-spin infinite 5s linear;
+    animation: logo-spin infinite 10s linear;
     height: 50px;
     position: relative;
     pointer-events: none;
