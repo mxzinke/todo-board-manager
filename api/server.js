@@ -21,7 +21,7 @@ api.publish(() => api.channel('everybody'));
 
 /* Services */
 api.use('topics', new topics());
-api.use('elements', new elements.Elements());
+api.use('elements', new elements());
 
 /* Server Listing */
 const server = api.listen(port); // Listen on Port 3000

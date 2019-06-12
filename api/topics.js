@@ -1,30 +1,15 @@
 const database = require('./database');
+const elements = require('./elements');
 
 class Topics {
 
-    async find() {
-        var sortedElements = [];
+    constructor() {
+        this.Elements = new elements();
+    }
+
+    async find(params) {
+        var sortedElements = await this.Elements.getAllByTopics();
         var allTopics = { topics: [] };
-        var elementsQuery = await database.query('SELECT eId, label, sortIndex, tId FROM elements')
-
-        elementsQuery.forEach(element => {
-            var sortedElementIx = sortedElements.findIndex(e => e.tId === element.tId);
-
-            var mainElement = {
-                key: element.eId,
-                label: element.label,
-                index: element.sortIndex
-            };
-
-            if (sortedElementIx === -1) {
-                sortedElements.push({
-                    tId: element.tId,
-                    elements: [mainElement]
-                });
-            } else {
-                sortedElements[sortedElementIx].elements.push(mainElement);
-            }
-        });
 
         var topicQuery = await database.query('SELECT tId, title, sortIndex FROM topics');
 
@@ -40,7 +25,15 @@ class Topics {
         });
 
         return allTopics;
-    } 
+    }
+
+    async get(id, params) {
+        var topicQuery = await database.query("SELECT tId AS 'key', title, sortIndex AS 'index' FROM topics WHERE tId = '" + id + "'");
+
+        topicQuery[0].elements = await this.Elements.getByTopic(id)
+
+        return topicQuery[0];
+    }
 }
 
 module.exports = Topics;
