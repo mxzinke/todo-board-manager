@@ -4,7 +4,7 @@ class Elements {
 
     async getAllByTopics() {
         var sortedElements = [];
-        var elementsQuery = await database.query('SELECT eId, label, sortIndex, tId FROM elements');
+        var elementsQuery = await database.query('SELECT eId, label, sortIndex, state, tId FROM elements');
 
         elementsQuery.forEach(element => {
             var sortedElementIx = sortedElements.findIndex(e => e.tId === element.tId);
@@ -12,7 +12,8 @@ class Elements {
             var mainElement = {
                 key: element.eId,
                 label: element.label,
-                index: element.sortIndex
+                state: Boolean(element.state),
+                index: element.sortIndex,
             };
 
             if (sortedElementIx === -1) {
@@ -29,13 +30,21 @@ class Elements {
     }
 
     async getByTopic(topicId) {
-        var elementsQuery = await database.query("SELECT eId AS 'key', label, sortIndex AS 'index' FROM elements WHERE tId = '" + topicId + "'");
+        var elementsQuery = await database.query("SELECT eId AS 'key', label, state, sortIndex AS 'index' FROM elements WHERE tId = '" + topicId + "'");
+        elementsQuery.forEach(function(e) {
+             e.state = Boolean(e.state)
+             return e;
+        });
         return elementsQuery;
     }
 
     async find(params) {
         if (params.query.topic === undefined) {
-            var elementsQuery = await database.query("SELECT eId AS 'key', tId AS 'topicId', label, sortIndex AS 'index' FROM elements");
+            var elementsQuery = await database.query("SELECT eId AS 'key', tId AS 'topicKey', label, state, sortIndex AS 'index' FROM elements");
+            elementsQuery.map(e => {
+                e.state = Boolean(e.state)
+                return e;
+            });
             return { elements: elementsQuery };
         } else {
             return { elements: await this.getByTopic( Number(params.query.topic) ) };
@@ -43,7 +52,8 @@ class Elements {
     }
 
     async get(id, params) {
-        var elementsQuery = await database.query("SELECT eId AS 'key', label, sortIndex AS 'index' FROM elements WHERE eId = '" + id + "'");
+        var elementsQuery = await database.query("SELECT eId AS 'key', label, state, sortIndex AS 'index' FROM elements WHERE eId = '" + id + "'");
+        elementsQuery[0].state = Boolean(elementsQuery[0].state);
         return elementsQuery[0];
     }
 }
