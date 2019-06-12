@@ -34,8 +34,6 @@ class Elements {
     }
 
     async find(params) {
-
-        console.log(params);
         if (params.query.topic === undefined) {
             var elementsQuery = await database.query("SELECT eId AS 'key', tId AS 'topicId', label, sortIndex AS 'index' FROM elements");
             return { elements: elementsQuery };
