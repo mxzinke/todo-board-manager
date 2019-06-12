@@ -1,13 +1,8 @@
-import connectionConfig from './api-config';
 
 /* @class The Class for Connection to the RESTful-API */
-export default class ApiSocket {
-     constructor() {
-        var config = JSON.parse(connectionConfig);
-        this.address = config.apiUrl;
-        this.defaultMethod = config.defaultMethod;
-
-        // TODO: After loading the config -> checking if connection is available
+export default class ApiConnector {
+     constructor(config) {
+        this.socket = WebSocket(config.apiUrl);
     }
 
     /* @function Transpile the JSON Format into an Object
@@ -16,7 +11,7 @@ export default class ApiSocket {
      * @return normal JS Object or an array of objects */
     doRequest(request, method) {
         var requestUrl = this.address + request;
-        var requestMethod = (method == undefined) ? this.defaultMethod : method;
+        var requestMethod = (method === undefined) ? this.defaultMethod : method;
 
         try {
             this._verifyRequest(requestUrl, requestMethod);
