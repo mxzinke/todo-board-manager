@@ -3,6 +3,7 @@ const express = require('@feathersjs/express');
 const socketIO = require('@feathersjs/socketio');
 //const memory = require('feathers-memory');
 const topics = require('./topics');
+const elements = require('./elements');
 
 /* Settings of the API Handler */
 const api = express(feathers());
@@ -18,10 +19,9 @@ api.on('connection', connection => api.channel('everybody').join(connection));
 api.publish(() => api.channel('everybody'));
 
 
-/* Message Service */
+/* Services */
 api.use('topics', new topics());
-
-//api.use('messages', new message.Messages());
+api.use('elements', new elements.Elements());
 
 /* Server Listing */
 const server = api.listen(port); // Listen on Port 3000
