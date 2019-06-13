@@ -6,7 +6,6 @@ import './assets/styles/App.css';
 import './assets/styles/Forms.css';
 import Header from './components/Header';
 import TopicHandler from './components/TopicHandler';
-import ApiConnector from './ApiConnector';
 
 /* @function deleting all empty array fields
  * @param array The array which 
@@ -19,9 +18,6 @@ export function delEmptyArrayFields(array) {
   return newArray;
 }
 
-export const Api = new ApiConnector({
-  apiUrl: "http://localhost:4200"
-});
 
 /* @important @function Root App Class */
 function App() {
