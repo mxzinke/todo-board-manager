@@ -12,7 +12,7 @@ export default class Topic extends React.Component {
 
     constructor(params) {
         super(params);
-        this.componentKey = "topic_" + params.key;
+        this.componentKey = params.dataKey;
         this.key = params.dataKey;
         this.state = {
             title: "The Title Project",
