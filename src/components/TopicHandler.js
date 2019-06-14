@@ -1,6 +1,6 @@
 import React from 'react';
 import Topic from './Topic';
-import { topicsService } from './../connector';
+import { topicsService, socket } from './../connector';
 import LoadingElement from './LoadingElement';
 
 export default class TopicHandler extends React.Component {
@@ -11,6 +11,22 @@ export default class TopicHandler extends React.Component {
 
         // Loading content
         this.syncTopics();
+
+        socket.on('topics created', () => this.syncTopics());
+        socket.on('topics removed', result => {
+            if (result !== undefined) {
+                var topics = this.state.topics;
+                var topicIx = topics.findIndex(e => e !== undefined && e.key === result.key);
+                
+                if (topicIx !== -1) {
+                    delete topics[topicIx];
+                    topics = topics.filter( (n) => { return n !== undefined } );
+                    this.setState(topics);
+                } else {
+                    this.syncTopics();
+                }
+            }
+        });
     }
 
     async syncTopics() {
@@ -44,7 +60,7 @@ export default class TopicHandler extends React.Component {
                     this.syncTopics();
                 }
             } else {
-                console.log("This element was already deleted");
+                console.log("This element was already deleted.");
             }
         });
 
