@@ -3,7 +3,7 @@ import feathers from '@feathersjs/client';
 
 // Configuration of the API
 const Api = {
-    url: "https://localhost:4200"
+    url: "https://api.todo.mxzinke.dev" // "http://192.168.179.80:4200"
 };
 
 const socket = io(Api.url);
@@ -18,4 +18,4 @@ client.configure(feathers.socketio(socket));
 var topicsService = client.service('topics');
 var todoService = client.service('elements');
 
-export { todoService, topicsService };
+export { todoService, topicsService, socket };

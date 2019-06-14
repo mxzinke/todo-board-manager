@@ -73,20 +73,25 @@ class Elements {
     }
 
     async patch(id, data, params) {
+        var result = await this.get(id)
+
         if (params.query.switchState !== undefined && params.query.switchState !== 0) {
-            const newState = Number(!( (await this.get(id)).state ));
-            await database.query("UPDATE elements SET state = '" + newState + "' WHERE elements.eId = '" + id + "'");
+            const newState = Number(!( result.state ));
+            database.query("UPDATE elements SET state = '" + newState + "' WHERE elements.eId = '" + id + "'");
+            result.state = newState;
         }
 
         if (data.state !== undefined) {
-            await database.query("UPDATE elements SET state = '" + this.state + "' WHERE elements.eId = '" + id + "'");
+            database.query("UPDATE elements SET state = '" + data.state + "' WHERE elements.eId = '" + id + "'");
+            result.state = data.state;
         }
 
         if (data.index !== undefined) {
-            await database.query("UPDATE elements SET sortIndex = '" + data.index + "' WHERE elements.eId = '" + id + "'");
+            database.query("UPDATE elements SET sortIndex = '" + data.index + "' WHERE elements.eId = '" + id + "'");
+            result.index = data.index;
         }
 
-        return await this.get(id);
+        return result;
     }
 
     async remove(id, params) {
