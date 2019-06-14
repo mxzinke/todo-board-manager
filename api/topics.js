@@ -11,8 +11,6 @@ class Topics {
         var topicQuery;
         var allTopics;
 
-        console.log(params)
-
         if (params.query.withoutTitle === undefined) {
             topicQuery = await database.query("SELECT tId AS 'key', title, sortIndex AS 'index' FROM topics");
         } else {
@@ -22,9 +20,10 @@ class Topics {
         if (params.query.withoutElements === undefined) {
             var sortedElements = await this.Elements.getAllByTopics();
             allTopics = { topics: topicQuery };
-            topicQuery.forEach((row, index) => {
-                var relevantElements = sortedElements.filter(e => e.tId === row.key);
-                var relevantEle = (relevantElements.length > 0) ? relevantElements[0].elements : [];
+            allTopics.topics.forEach((row, index) => {
+                var relevantIx = sortedElements.findIndex(e => e.topicId === row.key);
+                
+                var relevantEle = (relevantIx !== -1) ? sortedElements[relevantIx].elements : [];
 
                 allTopics.topics[index].elements = relevantEle;
             });
