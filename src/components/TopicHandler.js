@@ -10,12 +10,12 @@ export default class TopicHandler extends React.Component {
         this.state = {};
 
         // Loading content
-        this.doRequestOnTopics();
+        this.syncTopics();
     }
 
-    async doRequestOnTopics() {
+    async syncTopics() {
         try {
-            topicsService.find( { query: {}}).then( result => {
+            topicsService.find( { query: { withoutElements: true }}).then( result => {
                 this.setState(result);
             });
         } catch(e) {
@@ -34,15 +34,17 @@ export default class TopicHandler extends React.Component {
         topicsService.remove(topicKey).then( result => {
             if (result !== undefined) {
                 var topics = this.state.topics;
-                var topicIx = topics.findIndex(e => e.key === result.key);
+                var topicIx = topics.findIndex(e => e !== undefined && e.key === result.key);
                 
                 if (topicIx !== -1) {
                     delete topics[topicIx];
                     topics = topics.filter( (n) => { return n !== undefined } );
                     this.setState(topics);
                 } else {
-                    throw new Error("The Topic could not be found in the in the state-list.");
+                    this.syncTopics();
                 }
+            } else {
+                console.log("This element was already deleted");
             }
         });
 
