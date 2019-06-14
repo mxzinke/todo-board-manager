@@ -3,7 +3,7 @@ import feathers from '@feathersjs/client';
 
 // Configuration of the API
 const Api = {
-    url: "http://localhost:4200"
+    url: "https://localhost:4200"
 };
 
 const socket = io(Api.url);
