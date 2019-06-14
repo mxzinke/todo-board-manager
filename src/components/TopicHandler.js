@@ -55,25 +55,12 @@ export default class TopicHandler extends React.Component {
     addTopic() {
         var topics = this.state.topics;
 
-        var checkNewKey = (newKey) => {return (topics.some(e => e.key === newKey) || newKey === 0) }
+        topicsService.create({}).then( result => {
+            topics.push(result);
 
-        var min = 10000000;
-        var max = 99999999;
-        var newKey = 0;
-        do {
-            newKey = Math.round(Math.random() * (max - min)) + min;
-        } while (checkNewKey(newKey));
-
-        var freeIx = 0
-        topics.forEach(e => { freeIx = (e.index > freeIx) ? e.index : freeIx +1 });
-
-        topics.push({
-            key: newKey,
-            index: freeIx
-        });
-
-        this.setState({
-            topics: topics
+            this.setState({
+                topics: topics
+            });
         });
     }
 
