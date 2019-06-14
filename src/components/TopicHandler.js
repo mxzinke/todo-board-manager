@@ -15,7 +15,7 @@ export default class TopicHandler extends React.Component {
 
     async syncTopics() {
         try {
-            topicsService.find( { query: { withoutElements: true }}).then( result => {
+            topicsService.find( { query: { withoutElements: 1, withoutTitle: 1 }}).then( result => {
                 this.setState(result);
             });
         } catch(e) {
@@ -70,7 +70,7 @@ export default class TopicHandler extends React.Component {
         if (this.state.topics !== undefined) {
             return ( this.state.topics.map( (topic) =>
             <Topic key={"topic_" + topic.key} dataKey={topic.key}
-            onDeleteHandler={ (tKey) => this.deleteTopic(tKey) } />) );
+            onDeleteHandler={ (tKey) => this.deleteTopic(tKey) } onIssueRefresh={ () => this.syncTopics() } />) );
         } else {
             return (<LoadingElement />);
         }      

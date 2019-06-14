@@ -4,6 +4,7 @@ import '../assets/styles/Topic.css';
 import deleteIcon from '../assets/icons/delete.svg';
 import ToDoAddForm from './ToDoAddForm';
 import { delEmptyArrayFields } from '../App';
+import { topicsService, todoService } from '../connector';
 
 /* @class Generating the topic based overview of the To-Do's 
  * @param key For generating DOM-key and the key for API-Request */
@@ -15,33 +16,14 @@ export default class Topic extends React.Component {
         this.key = params.dataKey;
         this.state = {
             title: "",
-            open: [
-                {
-                    key: 124223322344,
-                    label: "Improve Design",
-                    index: 0
-                },
-                {
-                    key: 190929393912,
-                    label: "Setup the RESTful-API",
-                    index: 1
-                },
-                {
-                    key: 123929292992,
-                    label: "Implement RESTful-API Access",
-                    index: 2
-                }
-            ],
-            done: [
-                {
-                    key: 212444324344,
-                    label: "Adding basic React Components",
-                    index: 0
-                }
-            ]
+            open: [],
+            done: []
         };
 
+        this.refreshSite = params.onIssueRefresh;
         this.onDeleteHandler = params.onDeleteHandler;
+
+        this.syncTopic();
     }
 
     /* @function Changing the State of a Element: done ←→ open
@@ -110,31 +92,35 @@ export default class Topic extends React.Component {
      * This function is causing a new state and re-rendering */
     delElement(elementKey) {
         var todoElements = this.state;
-        var state = todoElements.done.some(e => e.key === elementKey);
-        var selElem = (state) ? todoElements.done : todoElements.open;
-        var elementIx = selElem.findIndex(el => el.key === elementKey);
 
-        if (state) {
-            delete todoElements.done[elementIx];
-            todoElements.done = delEmptyArrayFields(todoElements.done);
-        } else {
-            delete todoElements.open[elementIx];
-            todoElements.open = delEmptyArrayFields(todoElements.open);
-        }
+        todoService.remove(elementKey).then( result => {
+            if (result !== undefined) {
+                var selElem = (result.state) ? todoElements.done : todoElements.open;
+                var elementIx = selElem.findIndex(el => el.key === elementKey);
 
-        this.setState(todoElements);
+                if (result.state) {
+                    delete todoElements.done[elementIx];
+                    todoElements.done = delEmptyArrayFields(todoElements.done);
+                } else {
+                    delete todoElements.open[elementIx];
+                    todoElements.open = delEmptyArrayFields(todoElements.open);
+                }
+
+                this.setState(todoElements);
+            }
+        });        
     }
 
     /* @function Changing the title of the Topic
      * @param evt The Event causing this action
      * This function is causing a new state and re-rendering */
     changeTitle(evt) {
-        var todoElements = this.state;
-        var newValue = evt.target.value;
+        var newState = this.state;
+        var newTitle = evt.target.value;
         
-        if (newValue.length <= 30) {
-            todoElements.title = newValue;
-            this.setState(todoElements);
+        if (newTitle.length <= 30) {
+            newState.title = newTitle;
+            this.setState(newState);
         }
     }
 
@@ -150,7 +136,7 @@ export default class Topic extends React.Component {
                             <img src={deleteIcon} alt="Delete" />
                         </button>
                         <input className="InvisibleInput" onChange={ (evt) => this.changeTitle(evt) }
-                        value={ this.state.title } type="text" placeholder="Set a Title" />
+                        value={ state.title } type="text" onBlur={ () => this.syncTitle() } placeholder="Set a Title" />
                     </div>
                     <div className="ToDoElements openToDo">
                         <h2>Open ToDos:</h2>
@@ -182,10 +168,32 @@ export default class Topic extends React.Component {
 
     /* @function For syncing the API with the local cache/storage
      * If some changes were detected the application has to re-render */
-    syncToDoTopic() {
-        // Create Algorithm for syncing the API with local container (also title!)
+    async syncTopic() {
+        try {
+            topicsService.get(this.key).then( result => {
+                if (result === undefined) {
+                    this.refreshSite();
+                }
 
-        //var apiAnswer = Api.doRequest("topic/" + this.key + "?state=false", "GET");
-        //var apiAnswer = Api.doRequest("topic/" + this.key + "?state=false", "GET");
+                var newState = this.state;
+                
+                newState.title = result.title
+                newState.open = result.elements.filter(e => e.state === false);
+                newState.done = result.elements.filter(e => e.state === true);
+
+                this.setState(newState);
+            });
+        } catch(e) {
+            console.log("Error at entrypoint /topics:", e);
+        }
+    }
+
+    async syncTitle() {
+        var newTitle = this.state.title;
+        topicsService.patch(this.key, { title: newTitle }).then( result => {
+            if (result.title !== newTitle) {
+                this.refreshSite();
+            }
+        })
     }
 }

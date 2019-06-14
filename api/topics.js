@@ -21,7 +21,7 @@ class Topics {
             var sortedElements = await this.Elements.getAllByTopics();
             allTopics = { topics: topicQuery };
             allTopics.topics.forEach((row, index) => {
-                var relevantIx = sortedElements.findIndex(e => e.topicId === row.key);
+                var relevantIx = sortedElements.findIndex(e => e.topicKey === row.key);
                 
                 var relevantEle = (relevantIx !== -1) ? sortedElements[relevantIx].elements : [];
 
@@ -59,7 +59,15 @@ class Topics {
     }
 
     async patch(id, data, params) {
+        if (data.title !== undefined) {
+            database.query("UPDATE topics SET title = '" + data.title + "' WHERE topics.tId = '" + id + "'");
+        }
 
+        if (data.index !== undefined) {
+            database.query("UPDATE topics SET sortIndex = '" + data.index + "' WHERE topics.tId = '" + id + "'");
+        }
+
+        return await this.get(id);
     }
 
     async remove(id, params) {
