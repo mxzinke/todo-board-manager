@@ -4,7 +4,7 @@ import '../assets/styles/Topic.css';
 import deleteIcon from '../assets/icons/delete.svg';
 import ToDoAddForm from './ToDoAddForm';
 import { delEmptyArrayFields } from '../App';
-import { topicsService, todoService } from '../connector';
+import { topicsService, todoService, socket } from '../connector';
 
 /* @class Generating the topic based overview of the To-Do's 
  * @param key For generating DOM-key and the key for API-Request */
@@ -24,6 +24,37 @@ export default class Topic extends React.Component {
         this.onDeleteHandler = params.onDeleteHandler;
 
         this.syncTopic();
+
+        socket.on('topics patched', result => {
+            var stateCopy = this.state;
+            if (result.key === this.key && stateCopy.title !== result.title) {
+                stateCopy.title = result.title;
+                this.setState(stateCopy);
+            }
+        });
+
+        socket.on('elements created', () => this.syncTopic());
+        socket.on('elements removed', result => {
+            if (result !== undefined) {
+                var todoElements = this.state;
+                var selElem = (result.state) ? todoElements.done : todoElements.open;
+                var elementIx = selElem.findIndex(el => el.key === result.key);
+
+                if (elementIx !== -1) {
+                    if (result.state) {
+                        delete todoElements.done[elementIx];
+                        todoElements.done = delEmptyArrayFields(todoElements.done);
+                    } else {
+                        delete todoElements.open[elementIx];
+                        todoElements.open = delEmptyArrayFields(todoElements.open);
+                    }
+                    this.setState(todoElements);
+                } else {
+                    this.syncTopic();
+                }
+            }
+        });
+        socket.on('elements patched', () => this.syncTopic());
     }
 
     /* @function Changing the State of a Element: done ←→ open
@@ -104,6 +135,22 @@ export default class Topic extends React.Component {
         var tKey = this.key;
         var state = this.state;
 
+        var doneElements;
+
+        if (state.done.length > 0) {
+            doneElements = (<div className="ToDoElements doneToDo">
+                                <h2>Done:</h2>
+                                {
+                                    state.done.map(
+                                        element => <ToDoElement key={"todo_" + element.key} dataKey={element.key} onChangeHandler={() => this.changeStateOfElement(element.key, true)}
+                                        onDeleteHandler={ () => this.delElement(element.key) } label={element.label} state={true} />
+                                    )
+                                }
+                            </div>)
+        } else {
+            doneElements = (null);
+        }
+
         return (
             <div className="TopicWrapper">
                 <div className="Topic" id={this.componentKey}>
@@ -115,7 +162,7 @@ export default class Topic extends React.Component {
                         value={ state.title } type="text" onBlur={ () => this.syncTitle() } placeholder="Set a Title" />
                     </div>
                     <div className="ToDoElements openToDo">
-                        <h2>Open ToDos:</h2>
+                        <h2>Open:</h2>
                         {
                             state.open.map(
                                 element => <ToDoElement key={"todo_" + element.key} dataKey={element.key} onChangeHandler={() => this.changeStateOfElement(element.key, false)}
@@ -123,15 +170,7 @@ export default class Topic extends React.Component {
                             )
                         }
                     </div>
-                    <div className="ToDoElements doneToDo">
-                        <h2>Done ToDos:</h2>
-                        {
-                            state.done.map(
-                                element => <ToDoElement key={"todo_" + element.key} dataKey={element.key} onChangeHandler={() => this.changeStateOfElement(element.key, true)}
-                                onDeleteHandler={ () => this.delElement(element.key) } label={element.label} state={true} />
-                            )
-                        }
-                    </div>
+                    { doneElements }
                 </div>
                 <div className="TopicForm">
                     <ToDoAddForm onAddElement={ (label) => this.addElement(label) }/>

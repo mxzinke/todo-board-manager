@@ -1,7 +1,6 @@
 const feathers = require('@feathersjs/feathers');
 const express = require('@feathersjs/express');
 const socketIO = require('@feathersjs/socketio');
-//const memory = require('feathers-memory');
 const topics = require('./topics');
 const elements = require('./elements');
 
@@ -19,7 +18,6 @@ api.use(express.errorHandler({
 /* Publish all events to the `everybody` channel */
 api.on('connection', connection => api.channel('everybody').join(connection));
 api.publish(() => api.channel('everybody'));
-
 
 /* Services */
 api.use('topics', new topics());
