@@ -29,34 +29,14 @@ export default class Topic extends React.Component {
     /* @function Changing the State of a Element: done ←→ open
      * @param elementKey The key of the key which want to move
      * This function is causing a new state and re-rendering */
-    changeStateOfElement(elementKey) {
-        var todoElements = this.state;
-
-        
-        var state = todoElements.done.some(e => e.key === elementKey);
-        var selElem = (state) ? todoElements.done : todoElements.open;
-        var elementIx = selElem.findIndex(el => el.key === elementKey);
-        var element = selElem[elementIx];
-
-        var highestIx = 0;
-
-        if (!state) {
-            todoElements.done.forEach(e => { highestIx = (e.index > highestIx) ? e.index : highestIx });
-            element.index = highestIx + 1;
-            
-            todoElements.done.push(element);
-            delete todoElements.open[elementIx];
-            todoElements.open = delEmptyArrayFields(todoElements.open);
-        } else {
-            todoElements.open.forEach(e => { highestIx = (e.index > highestIx) ? e.index : highestIx });
-            element.index = highestIx + 1;
-
-            todoElements.open.push(element);
-            delete todoElements.done[elementIx];
-            todoElements.done = delEmptyArrayFields(todoElements.done);
-        }
-
-        this.setState(todoElements);
+    changeStateOfElement(elementKey, oldState) {
+        todoService.patch(elementKey, {}, {query: { switchState: 1 }}).then( result => {
+            if (result !== undefined && result.state !== oldState) {
+                this.syncTopic();
+            } else {
+                console.log("An error occurred at server side. Cannot update state of element", elementKey);
+            }
+        });
     }
 
     /* @function Adding a new ToDo Element to the "Open"-Field
@@ -65,26 +45,20 @@ export default class Topic extends React.Component {
     addElement(newLabel) {
         var todoElements = this.state;
 
-        var highestIx = 0;
-        todoElements.open.forEach(e => { highestIx = (e.index > highestIx) ? e.index : highestIx });
-
-        var checkNewKey = (newKey) => {return (todoElements.open.some(e => e.key === newKey) || todoElements.done.some(e => e.key === newKey) || newKey === 0) }
-
-        var min = 100000000000;
-        var max = 999999999999;
-        var newKey = 0;
-        do {
-            newKey = Math.round(Math.random() * (max - min)) + min;
-        } while (checkNewKey(newKey));
-
-        var newElement = {
-            key: newKey,
+        todoService.create({
             label: newLabel,
-            index: highestIx + 1
-        }
+            topicKey: this.key
+        }).then( result => {
+            if (result !== undefined) {
+                result.state = undefined;
+                result.topicKey = undefined;
 
-        todoElements.open.push(newElement);
-        this.setState(todoElements);
+                todoElements.open.push(result);
+                this.setState(todoElements);
+            } else {
+                this.syncTopic();
+            }
+        });
     }
 
     /* @function Deleting a ToDo-Element
@@ -144,7 +118,7 @@ export default class Topic extends React.Component {
                         <h2>Open ToDos:</h2>
                         {
                             state.open.map(
-                                element => <ToDoElement key={"todo_" + element.key} dataKey={element.key} onChangeHandler={() => this.changeStateOfElement(element.key)}
+                                element => <ToDoElement key={"todo_" + element.key} dataKey={element.key} onChangeHandler={() => this.changeStateOfElement(element.key, false)}
                                 onDeleteHandler={ () => this.delElement(element.key) }  label={element.label} state={false} />
                             )
                         }
@@ -153,7 +127,7 @@ export default class Topic extends React.Component {
                         <h2>Done ToDos:</h2>
                         {
                             state.done.map(
-                                element => <ToDoElement key={"todo_" + element.key} dataKey={element.key} onChangeHandler={() => this.changeStateOfElement(element.key)}
+                                element => <ToDoElement key={"todo_" + element.key} dataKey={element.key} onChangeHandler={() => this.changeStateOfElement(element.key, true)}
                                 onDeleteHandler={ () => this.delElement(element.key) } label={element.label} state={true} />
                             )
                         }

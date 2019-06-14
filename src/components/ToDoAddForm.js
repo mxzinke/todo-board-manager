@@ -27,7 +27,7 @@ export default class ToDoAddForm extends React.Component {
     render() {
         return (
             <div className="AddForm">
-                <input className="InvisibleInput" type="text" value={ this.state.inputValue } onChange={ (evt) => this.onChangeHandler(evt) } placeholder="Already everything done?"></input>
+                <input className="InvisibleInput" type="text" value={ this.state.inputValue } onChange={ (evt) => this.onChangeHandler(evt) } placeholder="Already everything done?" />
                 <button className="AddButton" type="submit" onClick={ () => this.onSubmitHandler() }>+</button>
             </div>
         )

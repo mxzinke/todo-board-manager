@@ -19,7 +19,7 @@ export default class ToDoElement extends React.Component {
 
     onCheckboxChange() {
         this.onChangeHandler();
-        this.status = !this.status;
+        //this.status = !this.status;
     }
 
     render() {
@@ -27,8 +27,7 @@ export default class ToDoElement extends React.Component {
             <div className="ToDoElement" id={"todo_" + this.key}>
                 <label className="container">
                     { (this.status === true) ? <span className="done">{ this.label }</span> : <span className="open">{ this.label }</span> } 
-                    { (this.status === true) ? 
-                    <input type="checkbox" checked="checked" onChange={ () => this.onCheckboxChange() } />
+                    { (this.status === true) ? <input type="checkbox" checked="checked" onChange={ () => this.onCheckboxChange() } />
                     : <input type="checkbox" onChange={ () => this.onCheckboxChange() } /> }
 
                     <span className="checkmark" />

@@ -12,7 +12,9 @@ api.use(express.json());
 api.use(express.urlencoded({ extended: true }));
 api.configure(express.rest());
 api.configure(socketIO());
-api.use(express.errorHandler());
+api.use(express.errorHandler({
+    html: false
+}));
 
 /* Publish all events to the `everybody` channel */
 api.on('connection', connection => api.channel('everybody').join(connection));

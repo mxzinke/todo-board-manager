@@ -1,4 +1,5 @@
 const database = require('./database');
+const errors = require('@feathersjs/errors');
 
 class Elements {
 
@@ -54,6 +55,38 @@ class Elements {
         } else {
             return null
         }
+    }
+
+    async create(data, params) {
+        if (data.label === undefined || data.topicKey === undefined) {
+            return undefined;
+        }
+
+        var keyFinder = await database.query("SELECT MAX(eId) AS 'maxEId' FROM elements");
+        var indexFinder = await database.query("SELECT MAX(sortIndex) AS 'maxSortIndex' FROM elements WHERE tId = '" + data.topicKey + "'");
+        var newKey = Number(keyFinder[0].maxEId) + 1;
+        var newSortIndex = Number(indexFinder[0].maxSortIndex) + 1;
+
+        await database.query("INSERT INTO elements (eId, sortIndex, label, state, tId) VALUES ('" + newKey + "', '" + newSortIndex + "', '" + data.label + "', '0', '" + data.topicKey + "')");
+
+        return await this.get(newKey);
+    }
+
+    async patch(id, data, params) {
+        if (params.query.switchState !== undefined && params.query.switchState !== 0) {
+            const newState = Number(!( (await this.get(id)).state ));
+            await database.query("UPDATE elements SET state = '" + newState + "' WHERE elements.eId = '" + id + "'");
+        }
+
+        if (data.state !== undefined) {
+            await database.query("UPDATE elements SET state = '" + this.state + "' WHERE elements.eId = '" + id + "'");
+        }
+
+        if (data.index !== undefined) {
+            await database.query("UPDATE elements SET sortIndex = '" + data.index + "' WHERE elements.eId = '" + id + "'");
+        }
+
+        return await this.get(id);
     }
 
     async remove(id, params) {
