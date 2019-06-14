@@ -107,6 +107,8 @@ export default class Topic extends React.Component {
                 }
 
                 this.setState(todoElements);
+            } else {
+                this.refreshSite();
             }
         });        
     }
