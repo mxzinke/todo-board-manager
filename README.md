@@ -13,4 +13,12 @@ $ npm install
 
 After successfully installing all needed packages, you will be able to start the development server with `npm start` or build a productive site with `npm run build`.
 
-The site is using by default the RESTful-Websocket API (could be find under [api.todo.mxzinke.dev](https://api.todo.mxzinke.dev)). If your planing to use the site by yourself, you can change the url in the file `src/connector.js`. You can host your own API with the command `npm run-script api` or `node ./src/server.js` (will be served by default at port *4200*). For permanent hosting the backend it would recommend using [PM2](http://pm2.keymetrics.io)
+The site is using by default the RESTful-Websocket API (could be find under [api.todo.mxzinke.dev](https://api.todo.mxzinke.dev)). If your planing to use the site by yourself, you can change the url in the file `src/connector.js`. You can host your own API with the command
+```
+npm run-script api
+```
+or
+```
+node ./src/server.js
+```
+(will be served by default at port *4200*). For permanent hosting the backend it would recommend using [PM2](http://pm2.keymetrics.io).
