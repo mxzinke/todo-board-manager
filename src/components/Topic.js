@@ -4,7 +4,7 @@ import '../assets/styles/Topic.css';
 import deleteIcon from '../assets/icons/delete.svg';
 import ToDoAddForm from './ToDoAddForm';
 import { delEmptyArrayFields } from '../App';
-import { topicsService, todoService, socket } from '../connector';
+import { topicsService, todoService } from '../connector';
 
 /* @class Generating the topic based overview of the To-Do's 
  * @param key For generating DOM-key and the key for API-Request */
@@ -25,7 +25,7 @@ export default class Topic extends React.Component {
 
         this.syncTopic();
 
-        socket.on('topics patched', result => {
+        topicsService.on('patched', result => {
             var stateCopy = this.state;
             if (result.key === this.key && stateCopy.title !== result.title) {
                 stateCopy.title = result.title;
@@ -33,8 +33,8 @@ export default class Topic extends React.Component {
             }
         });
 
-        socket.on('elements created', () => this.syncTopic());
-        socket.on('elements removed', result => {
+        todoService.on('created', () => this.syncTopic());
+        todoService.on('removed', result => {
             if (result !== undefined) {
                 var todoElements = this.state;
                 var selElem = (result.state) ? todoElements.done : todoElements.open;
@@ -54,7 +54,7 @@ export default class Topic extends React.Component {
                 }
             }
         });
-        socket.on('elements patched', () => this.syncTopic());
+        todoService.on('patched', () => this.syncTopic());
     }
 
     /* @function Changing the State of a Element: done ←→ open

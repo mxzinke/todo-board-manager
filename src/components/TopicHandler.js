@@ -1,6 +1,6 @@
 import React from 'react';
 import Topic from './Topic';
-import { topicsService, socket } from './../connector';
+import { topicsService } from './../connector';
 import LoadingElement from './LoadingElement';
 
 export default class TopicHandler extends React.Component {
@@ -12,8 +12,8 @@ export default class TopicHandler extends React.Component {
         // Loading content
         this.syncTopics();
 
-        socket.on('topics created', () => this.syncTopics());
-        socket.on('topics removed', result => {
+        topicsService.on('created', () => this.syncTopics());
+        topicsService.on('removed', result => {
             if (result !== undefined) {
                 var topics = this.state.topics;
                 var topicIx = topics.findIndex(e => e !== undefined && e.key === result.key);

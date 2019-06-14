@@ -18,4 +18,4 @@ client.configure(feathers.socketio(socket));
 var topicsService = client.service('topics');
 var todoService = client.service('elements');
 
-export { todoService, topicsService, socket };
+export { todoService, topicsService };
