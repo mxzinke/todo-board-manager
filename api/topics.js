@@ -15,12 +15,13 @@ class Topics {
 
         topicQuery.forEach(row => {
             var relevantElements = sortedElements.filter(e => e.tId === row.tId);
+            var relevantEle = (relevantElements.length > 0) ? relevantElements[0].elements : [];
 
             allTopics.topics.push({
                 key: row.tId,
                 title: row.title,
                 index: row.sortIndex,
-                elements: relevantElements[0].elements
+                elements: relevantEle
             });
         });
 
@@ -30,9 +31,42 @@ class Topics {
     async get(id, params) {
         var topicQuery = await database.query("SELECT tId AS 'key', title, sortIndex AS 'index' FROM topics WHERE tId = '" + id + "'");
 
-        topicQuery[0].elements = await this.Elements.getByTopic(id)
+        if (topicQuery.length === 1) {
+            topicQuery[0].elements = await this.Elements.getByTopic(id);
+            return topicQuery[0];
+        } else {
+            return null;
+        }
+    }
 
-        return topicQuery[0];
+    async create(data, params) {
+        var title = (data.title !== undefined) ? data.title : "";
+        var indexFinder = await database.query("SELECT MAX(sortIndex) AS 'maxSortIndex', MAX(tId) AS 'maxTId' FROM topics")
+
+        var newKey = Number(indexFinder[0].maxTId) + 1;
+        var newSortIndex = Number(indexFinder[0].maxSortIndex) + 1;
+
+        await database.query("INSERT INTO topics (tId, sortIndex, title) VALUES ('" + newKey + "', '" + newSortIndex + "', '" + title + "')");
+
+        return await this.get(newKey);
+    }
+
+    async patch(id, data, params) {
+
+    }
+
+    async remove(id, params) {
+        if (id !== null) {
+            var removedItem = await this.get(id);
+
+            if (removedItem !== undefined) {
+                database.query("DELETE FROM topics WHERE tId = '" + id + "'");
+                database.query("DELETE FROM elements WHERE tId = '" + id + "'");
+                return removedItem;
+            } else {
+                return null;
+            }
+        }
     }
 }
 

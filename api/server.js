@@ -24,5 +24,5 @@ api.use('topics', new topics());
 api.use('elements', new elements());
 
 /* Server Listing */
-const server = api.listen(port); // Listen on Port 3000
+const server = api.listen(port); // Listen on Port
 server.on('listening', () => console.log('ToDo Manager Board RESTful-API started at Port ' + port));

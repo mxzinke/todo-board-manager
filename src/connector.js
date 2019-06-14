@@ -14,4 +14,8 @@ client.configure(feathers.socketio(socket));
   storage: window.localStorage
 }));*/
 
-export default client;
+// Services:
+var topicsService = client.service('topics');
+var todoService = client.service('elements');
+
+export { todoService, topicsService };
