@@ -8,22 +8,30 @@ class Topics {
     }
 
     async find(params) {
-        var sortedElements = await this.Elements.getAllByTopics();
-        var allTopics = { topics: [] };
+        var topicQuery;
+        var allTopics;
 
-        var topicQuery = await database.query('SELECT tId, title, sortIndex FROM topics');
+        console.log(params)
 
-        topicQuery.forEach(row => {
-            var relevantElements = sortedElements.filter(e => e.tId === row.tId);
-            var relevantEle = (relevantElements.length > 0) ? relevantElements[0].elements : [];
+        if (params.query.withoutTitle === undefined) {
+            topicQuery = await database.query("SELECT tId AS 'key', title, sortIndex AS 'index' FROM topics");
+        } else {
+            topicQuery = await database.query("SELECT tId AS 'key', sortIndex AS 'index' FROM topics");
+        }
 
-            allTopics.topics.push({
-                key: row.tId,
-                title: row.title,
-                index: row.sortIndex,
-                elements: relevantEle
+        if (params.query.withoutElements === undefined) {
+            var sortedElements = await this.Elements.getAllByTopics();
+            allTopics = { topics: topicQuery };
+            topicQuery.forEach((row, index) => {
+                var relevantElements = sortedElements.filter(e => e.tId === row.key);
+                var relevantEle = (relevantElements.length > 0) ? relevantElements[0].elements : [];
+
+                allTopics.topics[index].elements = relevantEle;
             });
-        });
+            
+        } else {
+            allTopics = { topics: topicQuery };            
+        }
 
         return allTopics;
     }

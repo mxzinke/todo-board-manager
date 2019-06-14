@@ -4,25 +4,20 @@ class Elements {
 
     async getAllByTopics() {
         var sortedElements = [];
-        var elementsQuery = await database.query('SELECT eId, label, sortIndex, state, tId FROM elements');
+        var elementsQuery = await database.query("SELECT eId AS 'key', label, sortIndex AS 'index', state, tId AS 'topicId' FROM elements");
 
         elementsQuery.forEach(element => {
-            var sortedElementIx = sortedElements.findIndex(e => e.tId === element.tId);
+            var sortedElementIx = sortedElements.findIndex(e => e.topicId === element.topicId);
 
-            var mainElement = {
-                key: element.eId,
-                label: element.label,
-                state: Boolean(element.state),
-                index: element.sortIndex,
-            };
+            element.state = Boolean(element.state)
 
             if (sortedElementIx === -1) {
                 sortedElements.push({
-                    tId: element.tId,
-                    elements: [mainElement]
+                    topicId: element.topicId,
+                    elements: [element]
                 });
             } else {
-                sortedElements[sortedElementIx].elements.push(mainElement);
+                sortedElements[sortedElementIx].elements.push(element);
             }
         });
 
