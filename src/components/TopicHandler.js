@@ -66,22 +66,24 @@ export default class TopicHandler extends React.Component {
         });
     }
 
-    renderTopics() {
+    render() {
         if (this.state.topics !== undefined) {
-            return ( this.state.topics.map( (topic) =>
+            var Topics = ( this.state.topics.map( (topic) =>
             <Topic key={"topic_" + topic.key} dataKey={topic.key}
             onDeleteHandler={ (tKey) => this.deleteTopic(tKey) } onIssueRefresh={ () => this.syncTopics() } />) );
-        } else {
-            return (<LoadingElement />);
-        }      
-    }
 
-    render() {
-        return (
-            <div className="Topics">
-                { this.renderTopics() }
-                <button className="AddButton" type="submit" onClick={ () => this.addTopic() }>+</button>
-            </div>
-        )
+            return (
+                <div className="Topics">
+                    { Topics }
+                    <button className="AddButton" type="submit" onClick={ () => this.addTopic() }>+</button>
+                </div>
+            );
+        } else {
+            return (
+                <div className="Topics">
+                    <LoadingElement />
+                </div>
+            );
+        }    
     }
 }

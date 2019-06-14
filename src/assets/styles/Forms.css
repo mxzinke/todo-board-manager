@@ -56,5 +56,6 @@
     display: table-cell;
     padding: 35px 55px;
     text-align: center;
+    cursor: wait;
 }
 
