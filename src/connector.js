@@ -3,7 +3,7 @@ import feathers from '@feathersjs/client';
 
 // Configuration of the API
 const Api = {
-    url: "http://localhost:4200"
+    url: "http://api.todo.mxzinke.dev"
 };
 
 const socket = io(Api.url);
