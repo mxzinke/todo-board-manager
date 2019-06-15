@@ -22,3 +22,31 @@ or
 node ./src/server.js
 ```
 (will be served by default at port *4200*). For permanent hosting the backend it would recommend using [PM2](http://pm2.keymetrics.io).
+
+## Development Roadmap
+*Current Version:* 0.1.1 [15.06.2019]
+
+### @ Version 0.1.0 Realtime changes
+* making changes in realtime (synced up between different devices/browser)
+* base RESTful-API structure with endpoints "/topics" and "/elements"
+* add/remove topics and todo-elements + change their state
+
+### @ Version 0.2.0: Authentification
+* default Sign-In and Sign-Up functionality
+* per User Topics
+
+### @ Version 0.3.0: Improved Usability
+* better User-Feedback at Connection-Problems
+* improved server-algorithms for better responsibility
+* progress-bar at the topic-title (to see how far the project/topic is to finally target)
+
+### @ Version 0.4.0: Advanced functionality
+* change label of the elements
+* add description to a topic
+* add files to todo-elements
+* add map-points to todo-elements
+
+### @ Version 0.5.0: Team
+* add & manage teams
+* share topics between different users/teams
+* refer an user at todo-element (via @user)
