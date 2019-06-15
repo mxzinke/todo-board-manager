@@ -17,5 +17,6 @@ client.configure(feathers.socketio(socket));
 // Services:
 var topicsService = client.service('topics');
 var todoService = client.service('elements');
+var authService = client.service('authentication');
 
-export { todoService, topicsService };
+export { todoService, topicsService, authService };
