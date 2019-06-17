@@ -24,10 +24,20 @@ export default class ToDoAddForm extends React.Component {
         });
     }
 
+    onKeyPressHandler(evt) {
+        if (evt.key === 'Enter') {
+            this.onSubmitHandler();
+        }
+    }
+
     render() {
         return (
             <div className="AddForm">
-                <input className="InvisibleInput" type="text" value={ this.state.inputValue } onChange={ (evt) => this.onChangeHandler(evt) } placeholder="Already everything done?" />
+                <input className="InvisibleInput" type="text"
+                value={ this.state.inputValue }
+                onChange={ (evt) => this.onChangeHandler(evt) }
+                onKeyPress={ (evt) => this.onKeyPressHandler(evt) }
+                placeholder="Already everything done?" />
                 <button className="AddButton" type="submit" onClick={ () => this.onSubmitHandler() }>+</button>
             </div>
         )
