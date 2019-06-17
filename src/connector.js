@@ -10,13 +10,12 @@ const socket = io(Api.url);
 const client = feathers();
 
 client.configure(feathers.socketio(socket));
-/*client.configure(feathers.authentication({
+client.configure(feathers.authentication({
   storage: window.localStorage
-}));*/
+}));
 
 // Services:
 var topicsService = client.service('topics');
 var todoService = client.service('elements');
-var authService = client.service('authentication');
 
-export { todoService, topicsService, authService };
+export { todoService, topicsService };
