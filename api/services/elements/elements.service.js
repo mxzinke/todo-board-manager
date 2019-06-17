@@ -1,5 +1,6 @@
-const database = require('./database');
-const errors = require('@feathersjs/errors');
+const database = require('./../database');
+const hooks = require('./elements.hooks');
+
 
 class Elements {
 
@@ -108,4 +109,9 @@ class Elements {
     }
 }
 
-module.exports = Elements;
+module.exports = function(app) {
+    app.use('/elements', new Elements());
+
+    const service = app.service('elements');
+    service.hooks(hooks);
+}

@@ -1,5 +1,6 @@
-const database = require('../database');
-const elements = require('./elements');
+const database = require('../../database');
+const elements = require('../elements/elements.service');
+const hooks = require('./topics.hooks');
 
 class Topics {
 
@@ -85,4 +86,9 @@ class Topics {
     }
 }
 
-module.exports = Topics;
+module.exports = function(app) {
+    app.use('/topics', new Topics());
+
+    const service = app.service('topics');
+    service.hooks(hooks);
+}
