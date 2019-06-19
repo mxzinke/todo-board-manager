@@ -2,11 +2,11 @@ import io from 'socket.io-client';
 import feathers from '@feathersjs/client';
 
 // Configuration of the API
-const Api = {
-    url: "https://api.todo.mxzinke.dev"
+const API = {
+    url: 'https://api.todo.mxzinke.dev'
 };
 
-const socket = io(Api.url);
+const socket = io(API.url);
 const client = feathers();
 
 client.configure(feathers.socketio(socket));
@@ -15,7 +15,6 @@ client.configure(feathers.authentication({
 }));
 
 // Services:
-var topicsService = client.service('topics');
-var todoService = client.service('elements');
+export var topicsService = client.service('topics');
+export var todoService = client.service('elements');
 
-export { todoService, topicsService };

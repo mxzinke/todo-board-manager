@@ -7,5 +7,5 @@ export default function LoadingScreen() {
             <img className="LoadingImage" src={ loading } alt="Loading" /><br />
             Please wait...
         </div>
-    )
+    );
 }

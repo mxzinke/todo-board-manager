@@ -64,7 +64,7 @@ export default class Topic extends React.Component {
             if (result !== undefined && result.state !== oldState) {
                 this.syncTopic();
             } else {
-                console.log('An error occurred at server side. Cannot update state of element', elementKey);
+                console.log(`An error occurred at server side. Can't update state of element ${elementKey}.`);
             }
         });
     }
@@ -202,7 +202,7 @@ export default class Topic extends React.Component {
                 this.setState(newState);
             });
         } catch(e) {
-            console.log('Error at endpoint/topics:', e);
+            console.log('Error at endpoint "topics":', e);
         }
     }
 

@@ -24,7 +24,7 @@ export default class ToDo extends React.Component {
 
     render() {
         return (
-            <div className="ToDoElement" id={"todo_" + this.key}>
+            <div className="ToDoElement" id={'todo_' + this.key}>
                 <label className="container">
                     { (this.status === true) ? <span className="done">{ this.label }</span> : <span className="open">{ this.label }</span> } 
                     { (this.status === true) ? <input type="checkbox" checked="checked" onChange={ () => this.onCheckboxChange() } />
