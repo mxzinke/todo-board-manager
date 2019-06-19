@@ -1,10 +1,9 @@
 {
-  "name": "todo-board",
-  "version": "0.1.0",
-  "private": true,
+  "name": "todo-board-manager",
+  "version": "0.1.1",
+  "private": false,
   "dependencies": {
     "@feathersjs/authentication": "^2.1.16",
-    "@feathersjs/authentication-local": "^1.2.9",
     "@feathersjs/client": "^3.7.8",
     "@feathersjs/express": "^1.3.1",
     "@feathersjs/feathers": "^3.3.1",
@@ -13,7 +12,7 @@
     "mysql": "^2.17.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1",
+    "react-scripts": "^3.0.1",
     "socket.io-client": "^2.2.0"
   },
   "scripts": {
@@ -21,10 +20,55 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "api": "node api/server.js"
+    "server": "node api/server.js"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "parserOptions": {
+      "ecmaVersion": 8,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true,
+        "impliedStrict": true
+      }
+    },
+    "rules": {
+      "eqeqeq": "error",
+      "no-regex-spaces": "error",
+      "no-unsafe-negation": "warn",
+      "no-else-return": "error",
+      "no-empty": "warn",
+      "max-classes-per-file": ["error", 1],
+      "no-magic-numbers": ["error", { "enforceConst": true }],
+      "semi": "error",
+      "semi-spacing": ["error", {
+        "before": true,
+        "after": false
+        }],
+      "spaces-before-blocks": "warn",
+      "spaces-before-function-paren": ["warn", {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }],
+      "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+      "quote-props": ["error", "never"],
+      "jsx-quotes": ["error", "prefer-double"],
+      "getter-return": "error",
+      "no-func-assign": "error",
+      "no-new": "error",
+      "no-octal": "error",
+      "no-self-compare": "error",
+      "no-useless-call": "warn",
+      "no-warning-comments": ["error", {
+        "terms": ["fixme", "problem", "warning"],
+        "location": "anywhere"
+        }],
+      "yoda": ["warn", "never"],
+      "sort-vars": ["error", { "ignoreCase": true }],
+      "spaced-command": ["error", "always"],
+      "template-curly-spacing": ["error", "never"]
+    }
   },
   "browserslist": {
     "production": [
