@@ -1,4 +1,9 @@
 import React from 'react';
+import InvisibleInput from './InvisibleInput';
+import AddButton from './AddButton';
+import { onPressEnter } from '../../utils';
+
+const NATIVE_PLACEHOLDER = 'Already everything done?';
 
 export default class ToDoAddForm extends React.Component {
     
@@ -11,11 +16,10 @@ export default class ToDoAddForm extends React.Component {
     }
 
     onSubmitHandler()  {
-        if (this.state.inputValue.length > 0) { this.onAddElement(this.state.inputValue); }
-        
-        this.setState({
-            inputValue: ''
-        })
+        if (this.hasInput()) {
+            this.onAddElement(this.state.inputValue);
+            this.resetInputField();
+        }
     }
 
     onChangeHandler(evt) {
@@ -24,22 +28,33 @@ export default class ToDoAddForm extends React.Component {
         });
     }
 
-    onKeyPressHandler(evt) {
-        if (evt.key === 'Enter') {
-            this.onSubmitHandler();
-        }
-    }
-
     render() {
+        const value = this.state.inputValue;
+
         return (
             <div className="AddForm">
-                <input className="InvisibleInput" type="text"
-                value={ this.state.inputValue }
-                onChange={ (evt) => this.onChangeHandler(evt) }
-                onKeyPress={ (evt) => this.onKeyPressHandler(evt) }
-                placeholder="Already everything done?" />
-                <button className="AddButton" type="submit" onClick={ () => this.onSubmitHandler() }>+</button>
+                {
+                    InvisibleInput(value, NATIVE_PLACEHOLDER, {
+                        onChange: (evt) => this.onChangeHandler(evt),
+                        onKeyPress: (evt) => onPressEnter(evt, () => this.onSubmitHandler())
+                    })
+                }{
+                    AddButton({
+                        onClick: () => this.onSubmitHandler()
+                    })
+                }
             </div>
-        )
+        );
+    }
+
+    hasInput() {
+        const NO_INPUT = 0;
+        return (this.state.inputValue.length > NO_INPUT);
+    }
+
+    resetInputField() {
+        this.setState({
+            inputValue: ''
+        });
     }
 }
