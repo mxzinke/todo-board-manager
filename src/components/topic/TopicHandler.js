@@ -2,6 +2,7 @@ import React from 'react';
 import Topic from './Topic';
 import { topicsService } from '../../services/Websocket';
 import LoadingElement from '../screens/Loading';
+import { NO_ELEMENT_FOUND, cleanUp } from '../../utils';
 
 export default class TopicHandler extends React.Component {
     
@@ -17,10 +18,10 @@ export default class TopicHandler extends React.Component {
             if (result !== undefined) {
                 var topics = this.state.topics;
                 var topicIx = topics.findIndex(e => e !== undefined && e.key === result.key);
-                
-                if (topicIx !== -1) {
+
+                if (topicIx !== NO_ELEMENT_FOUND) {
                     delete topics[topicIx];
-                    topics = topics.filter( (n) => { return n !== undefined } );
+                    topics = cleanUp(topics);
                     this.setState(topics);
                 } else {
                     this.syncTopics();
@@ -43,7 +44,7 @@ export default class TopicHandler extends React.Component {
      * @param Topic The unique key of the topic (saved in the this.state.topics)
      * This function is causing a new state and re-rendering (if confirmed) */
     deleteTopic(topicKey) {
-        if (!window.confirm("Do you really want to 𝗱𝗲𝗹𝗲𝘁𝗲 this Topic forever (a very long time)?")) {
+        if (!window.confirm('Do you really want to 𝗱𝗲𝗹𝗲𝘁𝗲 this Topic forever (a very long time)?')) {
             return null;
         }
 
@@ -51,16 +52,19 @@ export default class TopicHandler extends React.Component {
             if (result !== undefined) {
                 var topics = this.state.topics;
                 var topicIx = topics.findIndex(e => e !== undefined && e.key === result.key);
+
+                const NO_ELEMENT_FOUND = -1;
                 
-                if (topicIx !== -1) {
+                if (topicIx !== NO_ELEMENT_FOUND) {
                     delete topics[topicIx];
-                    topics = topics.filter( (n) => { return n !== undefined } );
+                    topics = cleanUp(topics);
+
                     this.setState(topics);
                 } else {
                     this.syncTopics();
                 }
             } else {
-                console.log("This element was already deleted.");
+                console.log('This element was already deleted.');
             }
         });
 
@@ -85,7 +89,7 @@ export default class TopicHandler extends React.Component {
     render() {
         if (this.state.topics !== undefined) {
             var Topics = ( this.state.topics.map( (topic) =>
-            <Topic key={"topic_" + topic.key} dataKey={topic.key}
+            <Topic key={'topic_' + topic.key} dataKey={topic.key}
             onDeleteHandler={ (tKey) => this.deleteTopic(tKey) } onIssueRefresh={ () => this.syncTopics() } />) );
 
             return (
@@ -94,12 +98,12 @@ export default class TopicHandler extends React.Component {
                     <button className="AddButton" type="submit" onClick={ () => this.addTopic() }>+</button>
                 </div>
             );
-        } else {
-            return (
-                <div className="Topics">
-                    <LoadingElement />
-                </div>
-            );
-        }    
+        }
+
+        return (
+            <div className="Topics">
+                <LoadingElement />
+            </div>
+        );   
     }
 }

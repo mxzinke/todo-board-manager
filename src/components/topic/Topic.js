@@ -4,7 +4,7 @@ import '../../assets/styles/topics/Topic.css';
 import deleteIcon from '../../assets/icons/actions/delete.svg';
 import ToDoAddForm from '../forms/ToDoAddForm';
 import { topicsService, todoService } from '../../services/Websocket';
-import { cleanArray } from '../../services/GlobalActions';
+import { NO_ELEMENT_FOUND, cleanUp } from '../../utils';
 
 /* @class Generating the topic based overview of the To-Do's 
  * @param key For generating DOM-key and the key for API-Request */
@@ -15,7 +15,7 @@ export default class Topic extends React.Component {
         this.componentKey = params.dataKey;
         this.key = params.dataKey;
         this.state = {
-            title: "",
+            title: '',
             open: [],
             done: []
         };
@@ -39,13 +39,13 @@ export default class Topic extends React.Component {
                 var selElem = (result.state) ? todoElements.done : todoElements.open;
                 var elementIx = selElem.findIndex(el => el.key === result.key);
 
-                if (elementIx !== -1) {
+                if (elementIx !== NO_ELEMENT_FOUND) {
                     if (result.state) {
                         delete todoElements.done[elementIx];
-                        todoElements.done = cleanArray(todoElements.done);
+                        todoElements.done = cleanUp(todoElements.done);
                     } else {
                         delete todoElements.open[elementIx];
-                        todoElements.open = cleanArray(todoElements.open);
+                        todoElements.open = cleanUp(todoElements.open);
                     }
                     this.setState(todoElements);
                 } else {
@@ -64,7 +64,7 @@ export default class Topic extends React.Component {
             if (result !== undefined && result.state !== oldState) {
                 this.syncTopic();
             } else {
-                console.log("An error occurred at server side. Cannot update state of element", elementKey);
+                console.log('An error occurred at server side. Cannot update state of element', elementKey);
             }
         });
     }
@@ -104,10 +104,10 @@ export default class Topic extends React.Component {
 
                 if (result.state) {
                     delete todoElements.done[elementIx];
-                    todoElements.done = cleanArray(todoElements.done);
+                    todoElements.done = cleanUp(todoElements.done);
                 } else {
                     delete todoElements.open[elementIx];
-                    todoElements.open = cleanArray(todoElements.open);
+                    todoElements.open = cleanUp(todoElements.open);
                 }
 
                 this.setState(todoElements);
@@ -123,8 +123,10 @@ export default class Topic extends React.Component {
     changeTitle(evt) {
         var newState = this.state;
         var newTitle = evt.target.value;
+
+        const MAX_LENGTH = 30;
         
-        if (newTitle.length <= 30) {
+        if (newTitle.length <= MAX_LENGTH) {
             newState.title = newTitle;
             this.setState(newState);
         }
@@ -136,17 +138,19 @@ export default class Topic extends React.Component {
 
         var doneElements;
 
-        if (state.done.length > 0) {
+        const EMPTY_LENGTH = 0;
+
+        if (state.done.length > EMPTY_LENGTH) {
             doneElements = (<div className="ToDoElements doneToDo">
                                 <h2>Done:</h2>
                                 {
                                     state.done.map(
-                                        element => <ToDo key={"todo_" + element.key} dataKey={element.key}
+                                        element => <ToDo key={'todo_' + element.key} dataKey={element.key}
                                         onChangeHandler={() => this.changeStateOfElement(element.key, true)}
                                         onDeleteHandler={ () => this.delElement(element.key) } label={element.label} state={true} />
                                     )
                                 }
-                            </div>)
+                            </div>);
         } else {
             doneElements = (null);
         }
@@ -165,7 +169,7 @@ export default class Topic extends React.Component {
                         <h2>Open:</h2>
                         {
                             state.open.map(
-                                element => <ToDo key={"todo_" + element.key} dataKey={element.key}
+                                element => <ToDo key={'todo_' + element.key} dataKey={element.key}
                                 onChangeHandler={() => this.changeStateOfElement(element.key, false)}
                                 onDeleteHandler={ () => this.delElement(element.key) }  label={element.label} state={false} />
                             )
@@ -191,7 +195,7 @@ export default class Topic extends React.Component {
 
                 var newState = this.state;
                 
-                newState.title = result.title
+                newState.title = result.title;
                 newState.open = result.elements.filter(e => e.state === false);
                 newState.done = result.elements.filter(e => e.state === true);
 
@@ -208,6 +212,6 @@ export default class Topic extends React.Component {
             if (result.title !== newTitle) {
                 this.refreshSite();
             }
-        })
+        });
     }
 }
