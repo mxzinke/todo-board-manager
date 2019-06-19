@@ -1,12 +1,12 @@
 import React from 'react';
-import deleteIcon from '../assets/icons/delete.svg';
-import '../assets/styles/ToDoElement.css';
+import deleteIcon from '../../assets/icons/actions/delete.svg';
+import '../../assets/styles/topics/ToDo.css';
 
 
 /* @class ToDo-Element Component
  * @param id Out of the API-Database and reused in DOM
  * @param label Content of the ToDo-Element */
-export default class ToDoElement extends React.Component {
+export default class ToDo extends React.Component {
     
     constructor(params) {
         super(params);

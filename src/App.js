@@ -2,10 +2,10 @@
  * @author Maximilian Zinke */
 
 import React from 'react';
-import './assets/styles/App.css';
-import './assets/styles/Forms.css';
-import Header from './components/Header';
-import TopicHandler from './components/TopicHandler';
+import './assets/styles/main/App.css';
+import './assets/styles/forms/Forms.css';
+import Header from './components/main/Header';
+import TopicHandler from './components/topic/TopicHandler';
 
 /* @function deleting all empty array fields
  * @param array The array which 

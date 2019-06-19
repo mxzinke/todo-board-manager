@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from '../assets/icons/logo.svg';
-import '../assets/styles/Header.css';
+import logo from '../../assets/icons/logo.svg';
+import '../../assets/styles/main/Header.css';
 
 /* @class Component of the Header
  * @param name Label for generating the Title */

@@ -1,10 +1,10 @@
 import React from 'react';
-import ToDoElement from './ToDoElement';
-import '../assets/styles/Topic.css';
-import deleteIcon from '../assets/icons/delete.svg';
-import ToDoAddForm from './ToDoAddForm';
-import { delEmptyArrayFields } from '../App';
-import { topicsService, todoService } from '../connector';
+import ToDo from './ToDo';
+import '../../assets/styles/topics/Topic.css';
+import deleteIcon from '../../assets/icons/actions/delete.svg';
+import ToDoAddForm from '../forms/ToDoAddForm';
+import { delEmptyArrayFields } from '../../App';
+import { topicsService, todoService } from '../../services/Websocket';
 
 /* @class Generating the topic based overview of the To-Do's 
  * @param key For generating DOM-key and the key for API-Request */
@@ -141,7 +141,7 @@ export default class Topic extends React.Component {
                                 <h2>Done:</h2>
                                 {
                                     state.done.map(
-                                        element => <ToDoElement key={"todo_" + element.key} dataKey={element.key}
+                                        element => <ToDo key={"todo_" + element.key} dataKey={element.key}
                                         onChangeHandler={() => this.changeStateOfElement(element.key, true)}
                                         onDeleteHandler={ () => this.delElement(element.key) } label={element.label} state={true} />
                                     )
@@ -165,7 +165,7 @@ export default class Topic extends React.Component {
                         <h2>Open:</h2>
                         {
                             state.open.map(
-                                element => <ToDoElement key={"todo_" + element.key} dataKey={element.key}
+                                element => <ToDo key={"todo_" + element.key} dataKey={element.key}
                                 onChangeHandler={() => this.changeStateOfElement(element.key, false)}
                                 onDeleteHandler={ () => this.delElement(element.key) }  label={element.label} state={false} />
                             )
@@ -198,7 +198,7 @@ export default class Topic extends React.Component {
                 this.setState(newState);
             });
         } catch(e) {
-            console.log("Error at entrypoint /topics:", e);
+            console.log('Error at endpoint/topics:', e);
         }
     }
 

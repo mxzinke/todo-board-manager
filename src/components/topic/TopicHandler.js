@@ -1,7 +1,7 @@
 import React from 'react';
 import Topic from './Topic';
-import { topicsService } from './../connector';
-import LoadingElement from './LoadingElement';
+import { topicsService } from '../../services/Websocket';
+import LoadingElement from '../screens/Loading';
 
 export default class TopicHandler extends React.Component {
     
@@ -35,7 +35,7 @@ export default class TopicHandler extends React.Component {
                 this.setState(result);
             });
         } catch(e) {
-            console.log("Error at entrypoint /topics:", e);
+            console.log('Error at endpoint/topics:', e);
         }
     }
 
