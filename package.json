@@ -52,12 +52,12 @@
       "semi-spacing": [
         "error",
         {
-          "before": true,
+          "before": false,
           "after": false
         }
       ],
-      "spaces-before-blocks": "warn",
-      "spaces-before-function-paren": [
+      "space-before-blocks": "warn",
+      "space-before-function-paren": [
         "warn",
         {
           "anonymous": "always",
@@ -71,10 +71,6 @@
         {
           "allowTemplateLiterals": true
         }
-      ],
-      "quote-props": [
-        "error",
-        "never"
       ],
       "jsx-quotes": [
         "error",
@@ -106,14 +102,6 @@
         {
           "ignoreCase": true
         }
-      ],
-      "spaced-command": [
-        "error",
-        "always"
-      ],
-      "template-curly-spacing": [
-        "error",
-        "never"
       ]
     }
   },
