@@ -3,8 +3,8 @@ import ToDo from './ToDo';
 import '../../assets/styles/topics/Topic.css';
 import deleteIcon from '../../assets/icons/actions/delete.svg';
 import ToDoAddForm from '../forms/ToDoAddForm';
-import { delEmptyArrayFields } from '../../App';
 import { topicsService, todoService } from '../../services/Websocket';
+import { cleanArray } from '../../services/GlobalActions';
 
 /* @class Generating the topic based overview of the To-Do's 
  * @param key For generating DOM-key and the key for API-Request */
@@ -42,10 +42,10 @@ export default class Topic extends React.Component {
                 if (elementIx !== -1) {
                     if (result.state) {
                         delete todoElements.done[elementIx];
-                        todoElements.done = delEmptyArrayFields(todoElements.done);
+                        todoElements.done = cleanArray(todoElements.done);
                     } else {
                         delete todoElements.open[elementIx];
-                        todoElements.open = delEmptyArrayFields(todoElements.open);
+                        todoElements.open = cleanArray(todoElements.open);
                     }
                     this.setState(todoElements);
                 } else {
@@ -104,10 +104,10 @@ export default class Topic extends React.Component {
 
                 if (result.state) {
                     delete todoElements.done[elementIx];
-                    todoElements.done = delEmptyArrayFields(todoElements.done);
+                    todoElements.done = cleanArray(todoElements.done);
                 } else {
                     delete todoElements.open[elementIx];
-                    todoElements.open = delEmptyArrayFields(todoElements.open);
+                    todoElements.open = cleanArray(todoElements.open);
                 }
 
                 this.setState(todoElements);
