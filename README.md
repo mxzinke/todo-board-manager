@@ -2,6 +2,8 @@
 
 ToDo-Board with real-time synchronization, for smooth team work. A demo can be found under [todo.mxzinke.dev](https://todo.mxzinke.dev).
 
+[![CodeFactor](https://www.codefactor.io/repository/github/mxzinke/todo-board-manager/badge)](https://www.codefactor.io/repository/github/mxzinke/todo-board-manager) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
 ## What can I do with this
 
 If you want, you're allowed to fork this repository. Also your allowed to host this [React.js](https://reactjs.org)-WebApp by yourself. You will find the [Feathers.js API](https://feathersjs.com) backend in the folder `api`.
