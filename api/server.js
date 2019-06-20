@@ -20,9 +20,11 @@ api.configure(express.rest());
 api.configure(socketIO());
 
 api.use(express.notFound());
-api.use(express.errorHandler({
+api.use(
+  express.errorHandler({
     html: false
-}));
+  })
+);
 
 api.configure(authentication);
 api.configure(services);
@@ -30,7 +32,7 @@ api.configure(services);
 api.hooks(serverHooks);
 
 /* Publish all events to the `everybody` channel */
-api.on('connection', connection => api.channel('everybody').join(connection));
+api.on('connection', (connection) => api.channel('everybody').join(connection));
 api.publish(() => api.channel('everybody'));
 
 /* If some unhandled rejections occurred */
@@ -41,5 +43,9 @@ process.on('unhandledRejection', (reason, p) =>
 /* Server Listing */
 const server = api.listen(port); // Listen on Port
 server.on('listening', () => {
-    logger.info('Feathers application started on http://%s:%d', api.get('host'), port)
+  logger.info(
+    'Feathers application started on http://%s:%d',
+    api.get('host'),
+    port
+  );
 });

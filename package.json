@@ -1,7 +1,17 @@
 {
   "name": "todo-board-manager",
+  "author": {
+    "name": "Maximilian Zinke",
+    "email": "me@mxzinke.dev",
+    "url": "https://mxzinke.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mxzinke/todo-board-manager.git"
+  },
   "version": "0.1.1",
   "private": false,
+  "license": "MIT",
   "dependencies": {
     "@feathersjs/authentication": "^2.1.16",
     "@feathersjs/client": "^3.7.8",
@@ -10,6 +20,8 @@
     "@feathersjs/socketio": "^3.2.9",
     "compression": "^1.7.4",
     "mysql": "^2.17.1",
+    "prettier": "^1.18.2",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "^3.0.1",
@@ -20,90 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "node api/server.js"
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "parserOptions": {
-      "ecmaVersion": 8,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true,
-        "impliedStrict": true
-      }
-    },
-    "rules": {
-      "eqeqeq": "error",
-      "no-regex-spaces": "error",
-      "no-unsafe-negation": "warn",
-      "no-else-return": "error",
-      "no-empty": "warn",
-      "max-classes-per-file": [
-        "error",
-        1
-      ],
-      "no-magic-numbers": [
-        "error",
-        {
-          "enforceConst": true
-        }
-      ],
-      "semi": "error",
-      "semi-spacing": [
-        "error",
-        {
-          "before": false,
-          "after": false
-        }
-      ],
-      "space-before-blocks": "warn",
-      "space-before-function-paren": [
-        "warn",
-        {
-          "anonymous": "always",
-          "named": "never",
-          "asyncArrow": "always"
-        }
-      ],
-      "quotes": [
-        "error",
-        "single",
-        {
-          "allowTemplateLiterals": true
-        }
-      ],
-      "jsx-quotes": [
-        "error",
-        "prefer-double"
-      ],
-      "getter-return": "error",
-      "no-func-assign": "error",
-      "no-new": "error",
-      "no-octal": "error",
-      "no-self-compare": "error",
-      "no-useless-call": "warn",
-      "no-warning-comments": [
-        "error",
-        {
-          "terms": [
-            "fixme",
-            "problem",
-            "warning"
-          ],
-          "location": "anywhere"
-        }
-      ],
-      "yoda": [
-        "warn",
-        "never"
-      ],
-      "sort-vars": [
-        "error",
-        {
-          "ignoreCase": true
-        }
-      ]
-    }
+    "server": "node api/server.js",
+    "format": "prettier --write \"**/*.+(js|jsx|md|css|sass|json)\""
   },
   "browserslist": {
     "production": [
@@ -116,5 +46,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^5.0.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.13.0"
   }
 }

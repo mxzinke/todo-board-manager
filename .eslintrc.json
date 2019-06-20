@@ -1,0 +1,71 @@
+{
+  "extends": ["airbnb", "prettier", "prettier/react"],
+  "parserOptions": {
+    "ecmaVersion": 8,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "impliedStrict": true
+    }
+  },
+  "rules": {
+    "eqeqeq": "error",
+    "no-regex-spaces": "error",
+    "no-unsafe-negation": "warn",
+    "no-else-return": "error",
+    "no-empty": "warn",
+    "max-classes-per-file": ["error", 1],
+    "no-magic-numbers": [
+      "error",
+      {
+        "enforceConst": true
+      }
+    ],
+    "semi": "error",
+    "semi-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": false
+      }
+    ],
+    "space-before-blocks": "warn",
+    "space-before-function-paren": [
+      "warn",
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "quotes": [
+      "error",
+      "single",
+      {
+        "allowTemplateLiterals": true
+      }
+    ],
+    "jsx-quotes": ["error", "prefer-double"],
+    "getter-return": "error",
+    "no-func-assign": "error",
+    "no-new": "error",
+    "no-octal": "error",
+    "no-self-compare": "error",
+    "no-useless-call": "warn",
+    "no-warning-comments": [
+      "error",
+      {
+        "terms": ["fixme", "problem", "warning"],
+        "location": "anywhere"
+      }
+    ],
+    "yoda": ["warn", "never"],
+    "sort-vars": [
+      "error",
+      {
+        "ignoreCase": true
+      }
+    ],
+    "no-console": "warn"
+  }
+}

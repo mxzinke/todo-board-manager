@@ -1,32 +1,32 @@
 .App-Header {
-    background-color: #282c34;
-    height: 50px;
-    width: 100%;
-    align-items: left;
-    color: white;
-    position: fixed;
-    top:0;
-    z-index: 200;
+  background-color: #282c34;
+  height: 50px;
+  width: 100%;
+  align-items: left;
+  color: white;
+  position: fixed;
+  top: 0;
+  z-index: 200;
 }
 
 .App-Header .Title {
-    font-size: 40px;
-    position: relative;
-    top: -12px;
+  font-size: 40px;
+  position: relative;
+  top: -12px;
 }
 
 .App-Header .Logo {
-    animation: logo-spin infinite 10s linear;
-    height: 50px;
-    position: relative;
-    pointer-events: none;
+  animation: logo-spin infinite 10s linear;
+  height: 50px;
+  position: relative;
+  pointer-events: none;
 }
 
 @keyframes logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
