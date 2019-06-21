@@ -1,5 +1,7 @@
 /* The ToDo Manager Board
- * @author Maximilian Zinke */
+ * @author Maximilian Zinke 👊
+ * 📡 https://mxzinke.dev
+ * 📧 me@mxzinke.dev */
 
 import React from 'react';
 import './assets/styles/main/App.css';

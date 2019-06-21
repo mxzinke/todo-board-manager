@@ -17,5 +17,5 @@ client.configure(
 );
 
 // Services:
-export var topicsService = client.service('topics');
-export var todoService = client.service('elements');
+export const topicsService = client.service('topics');
+export const todoService = client.service('elements');

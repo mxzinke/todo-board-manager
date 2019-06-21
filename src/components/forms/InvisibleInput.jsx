@@ -2,29 +2,45 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 
 // This Input has no surrounding by a border.
-function InvisibleInput(props) {
+function InvisibleInput({
+  value,
+  placeholder,
+  onChange,
+  onKeyPress,
+  onBlur,
+  onFocus
+}) {
   return (
     <input
       type="text"
       className="InvisibleInput"
-      placeholder={props.placeholder}
-      value={props.value}
+      placeholder={placeholder}
+      value={value}
       // DOM Events:
-      onChange={props.actions.onChange}
-      onKeyPress={props.actions.onKeyPress}
-      onFocus={props.actions.onFocus}
-      onBlur={props.actions.onBlur}
+      onChange={onChange}
+      onKeyPress={onKeyPress}
+      onFocus={onFocus}
+      onBlur={onBlur}
     />
   );
 }
 
 InvisibleInput.propTypes = {
-  // is required
-  value: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  onKeyPress: PropTypes.func,
+  onBlur: PropTypes.func,
+  onFocus: PropTypes.func
+};
 
-  // for dom-events
-  actions: PropTypes.objectOf(PropTypes.func)
+InvisibleInput.defaultProps = {
+  value: '',
+  placeholder: '',
+  onChange: () => {},
+  onBlur: () => {},
+  onFocus: () => {},
+  onKeyPress: () => {}
 };
 
 export default InvisibleInput;

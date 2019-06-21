@@ -2,18 +2,22 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import deleteIcon from '../../assets/icons/actions/delete.svg';
 
-function DeleteButton(actions) {
-  const DELETE_ICON = <img src={deleteIcon} alt="Delete" />;
+function DeleteButton({ onClick }) {
+  const BUTTON_CONTENT = <img src={deleteIcon} alt="Delete" />;
 
   return (
-    <button type="button" className="DeleteButton" onClick={actions.onClick}>
-      {DELETE_ICON}
+    <button type="button" className="DeleteButton" onClick={onClick}>
+      {BUTTON_CONTENT}
     </button>
   );
 }
 
-DeleteButton.propType = {
-  actions: PropTypes.objectOf(PropTypes.func)
+DeleteButton.propTypes = {
+  onClick: PropTypes.func
+};
+
+DeleteButton.defaultProps = {
+  onClick: () => {}
 };
 
 export default DeleteButton;

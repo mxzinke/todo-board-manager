@@ -1,19 +1,22 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { PropTypes } from 'prop-types';
 
-function AddButton(actions) {
-  const BUTTON_LABEL = '+';
+function AddButton({ onClick }) {
+  const BUTTON_CONTENT = '+';
 
   return (
-    <button type="button" className="AddButton" onClick={actions.onClick}>
-      {BUTTON_LABEL}
+    <button type="button" className="AddButton" onClick={onClick}>
+      {BUTTON_CONTENT}
     </button>
   );
 }
 
 AddButton.propTypes = {
-  // if you want some actions at DOM-Events
-  actions: PropTypes.objectOf(PropTypes.func)
+  onClick: PropTypes.func
+};
+
+AddButton.defaultProps = {
+  onClick: () => {}
 };
 
 export default AddButton;

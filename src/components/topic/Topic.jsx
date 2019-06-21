@@ -4,10 +4,9 @@ import '../../assets/styles/topics/Topic.css';
 import deleteIcon from '../../assets/icons/actions/delete.svg';
 import ToDoAddForm from '../forms/ToDoAddForm';
 import { topicsService, todoService } from '../../services/Websocket';
-import { NO_ELEMENT_FOUND, cleanUp } from '../../utils';
+import { NO_ELEMENT_FOUND, EMPTY_LENGTH, cleanUp } from '../../utils';
 
-/* @class Generating the topic based overview of the To-Do's
- * @param key For generating DOM-key and the key for API-Request */
+/* @class Generating the topic based overview of the To-Do's */
 export default class Topic extends React.Component {
   constructor(params) {
     super(params);
@@ -55,9 +54,6 @@ export default class Topic extends React.Component {
     todoService.on('patched', () => this.syncTopic());
   }
 
-  /* @function Changing the State of a Element: done ←→ open
-   * @param elementKey The key of the key which want to move
-   * This function is causing a new state and re-rendering */
   changeStateOfElement(elementKey, oldState) {
     todoService
       .patch(elementKey, {}, { query: { switchState: 1 } })
@@ -70,9 +66,6 @@ export default class Topic extends React.Component {
       });
   }
 
-  /* @function Adding a new ToDo Element to the "Open"-Field
-   * @param newLabel the new Label for the To-Do-Element
-   * This function is causing a new state and re-rendering */
   addElement(newLabel) {
     const todoElements = this.state;
 
@@ -91,9 +84,6 @@ export default class Topic extends React.Component {
       });
   }
 
-  /* @function Deleting a ToDo-Element
-   * @param elementKey The key of the ToDoElement of the topics list
-   * This function is causing a new state and re-rendering */
   delElement(elementKey) {
     const todoElements = this.state;
 
@@ -117,9 +107,6 @@ export default class Topic extends React.Component {
     });
   }
 
-  /* @function Changing the title of the Topic
-   * @param evt The Event causing this action
-   * This function is causing a new state and re-rendering */
   changeTitle(evt) {
     const newState = this.state;
     const newTitle = evt.target.value;
@@ -130,6 +117,31 @@ export default class Topic extends React.Component {
       newState.title = newTitle;
       this.setState(newState);
     }
+  }
+
+  async syncTopic() {
+    topicsService.get(this.key).then((result) => {
+      if (result === undefined) {
+        this.refreshSite();
+      }
+
+      const newState = this.state;
+
+      newState.title = result.title;
+      newState.open = result.elements.filter((e) => e.state === false);
+      newState.done = result.elements.filter((e) => e.state === true);
+
+      this.setState(newState);
+    });
+  }
+
+  async syncTitle() {
+    const newTitle = this.state.title;
+    topicsService.patch(this.key, { title: newTitle }).then((result) => {
+      if (result.title !== newTitle) {
+        this.refreshSite();
+      }
+    });
   }
 
   render() {
@@ -157,37 +169,6 @@ export default class Topic extends React.Component {
     } else {
       doneElements = null;
     }
-
-    /* @function For syncing the API with the local cache/storage
-   * If some changes were detected the application has to re-render */
-  async syncTopic() {
-    try {
-      topicsService.get(this.key).then((result) => {
-        if (result === undefined) {
-          this.refreshSite();
-        }
-
-        const newState = this.state;
-
-        newState.title = result.title;
-        newState.open = result.elements.filter((e) => e.state === false);
-        newState.done = result.elements.filter((e) => e.state === true);
-
-        this.setState(newState);
-      });
-    } catch (e) {
-      console.log('Error at endpoint "topics":', e);
-    }
-  }
-
-  async syncTitle() {
-    const newTitle = this.state.title;
-    topicsService.patch(this.key, { title: newTitle }).then((result) => {
-      if (result.title !== newTitle) {
-        this.refreshSite();
-      }
-    });
-  }
 
     return (
       <div className="TopicWrapper">
@@ -229,6 +210,4 @@ export default class Topic extends React.Component {
       </div>
     );
   }
-
-  
 }

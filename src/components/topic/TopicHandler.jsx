@@ -15,8 +15,8 @@ export default class TopicHandler extends React.Component {
     topicsService.on('created', () => this.syncTopics());
     topicsService.on('removed', (result) => {
       if (result !== undefined) {
-        var topics = this.state.topics;
-        var topicIx = topics.findIndex(
+        let { topics } = this.state;
+        const topicIx = topics.findIndex(
           (e) => e !== undefined && e.key === result.key
         );
 
@@ -57,12 +57,10 @@ export default class TopicHandler extends React.Component {
 
     topicsService.remove(topicKey).then((result) => {
       if (result !== undefined) {
-        var topics = this.state.topics;
-        var topicIx = topics.findIndex(
+        let { topics } = this.state;
+        const topicIx = topics.findIndex(
           (e) => e !== undefined && e.key === result.key
         );
-
-        const NO_ELEMENT_FOUND = -1;
 
         if (topicIx !== NO_ELEMENT_FOUND) {
           delete topics[topicIx];
@@ -76,28 +74,30 @@ export default class TopicHandler extends React.Component {
         console.log('This element was already deleted.');
       }
     });
+
+    return null;
   }
 
   /* @function Adding a new ToDo Element to the "Open"-Field
    * @param newLabel the new Label for the To-Do-Element
    * This function is causing a new state and re-rendering */
   addTopic() {
-    var topics = this.state.topics;
+    const { topics } = this.state;
 
     topicsService.create({}).then((result) => {
       topics.push(result);
 
       this.setState({
-        topics: topics
+        topics
       });
     });
   }
 
   render() {
     if (this.state.topics !== undefined) {
-      var Topics = this.state.topics.map((topic) => (
+      const Topics = this.state.topics.map((topic) => (
         <Topic
-          key={'topic_' + topic.key}
+          key={`topic_${topic.key}`}
           dataKey={topic.key}
           onDeleteHandler={(tKey) => this.deleteTopic(tKey)}
           onIssueRefresh={() => this.syncTopics()}

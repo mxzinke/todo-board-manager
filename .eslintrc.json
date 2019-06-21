@@ -6,7 +6,8 @@
     "ecmaFeatures": {
       "jsx": true,
       "impliedStrict": true
-    }
+    },
+    "parser": "babel-eslint"
   },
   "rules": {
     "eqeqeq": "error",
@@ -21,7 +22,6 @@
         "enforceConst": true
       }
     ],
-    "semi": "error",
     "semi-spacing": [
       "error",
       {
@@ -66,6 +66,10 @@
         "ignoreCase": true
       }
     ],
-    "no-console": "warn"
+    "no-console": "warn",
+    "react/require-default-props": "warn",
+    "react/destructuring-assignment": "off",
+    "jsx-a11y/label-has-for": "off",
+    "no-alert": "off"
   }
 }

@@ -15,8 +15,10 @@ export default class ToDoAddForm extends React.Component {
   }
 
   onSubmitHandler() {
+    const { inputValue } = this.state.inputValue;
+
     if (this.hasInput()) {
-      this.onAddElement(this.state.inputValue);
+      this.onAddElement(inputValue);
       this.resetInputField();
     }
   }
@@ -27,30 +29,30 @@ export default class ToDoAddForm extends React.Component {
     });
   }
 
-  render() {
-    const value = this.state.inputValue;
-
-    return (
-      <div className="AddForm">
-        {InvisibleInput(value, NATIVE_PLACEHOLDER, {
-          onChange: (evt) => this.onChangeHandler(evt),
-          onKeyPress: (evt) => onPressEnter(evt, () => this.onSubmitHandler())
-        })}
-        {AddButton({
-          onClick: () => this.onSubmitHandler()
-        })}
-      </div>
-    );
-  }
-
   hasInput() {
     const NO_INPUT = 0;
-    return this.state.inputValue.length > NO_INPUT;
+    const { inputValue } = this.state.inputValue;
+
+    return inputValue.length > NO_INPUT;
   }
 
   resetInputField() {
     this.setState({
       inputValue: ''
     });
+  }
+
+  render() {
+    return (
+      <div className="AddForm">
+        <InvisibleInput
+          value={this.state.inputValue}
+          label={NATIVE_PLACEHOLDER}
+          onChange={(evt) => this.onChangeHandler(evt)}
+          onKeyPress={(evt) => onPressEnter(evt, () => this.onSubmitHandler())}
+        />
+        <AddButton onClick={() => this.onSubmitHandler()} />
+      </div>
+    );
   }
 }
