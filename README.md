@@ -34,16 +34,17 @@ node ./src/server.js
 
 _Current Version:_ 0.1.1 [15.06.2019]
 
-### @ Version 0.1.0 Realtime changes
+### @ Version 0.1.0 Realtime changes :heavy_check_mark:
 
 - making changes in realtime (synced up between different devices/browser)
 - base RESTful-API structure with endpoints "/topics" and "/elements"
 - add/remove topics and todo-elements + change their state
 
-### @ Version 0.2.0: Authentification
+### @ Version 0.2.0: Authentication
 
 - default Sign-In and Sign-Up functionality
 - per User Topics
+- new project structure (with react-redux concept)
 
 ### @ Version 0.3.0: Improved Usability
 
