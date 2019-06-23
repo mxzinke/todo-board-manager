@@ -2,7 +2,7 @@
 
 ToDo-Board with real-time synchronization, for smooth team work. A demo can be found under [todo.mxzinke.dev](https://todo.mxzinke.dev).
 
-[![CodeFactor](https://www.codefactor.io/repository/github/mxzinke/todo-board-manager/badge)](https://www.codefactor.io/repository/github/mxzinke/todo-board-manager) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![CodeFactor](https://www.codefactor.io/repository/github/mxzinke/todo-board-manager/badge)](https://www.codefactor.io/repository/github/mxzinke/todo-board-manager) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier) [![Codeship Status for mxzinke/todo-board-manager](https://app.codeship.com/projects/e1bc05e0-759e-0137-8ca9-3aefec942851/status?branch=master)](https://app.codeship.com/projects/349645)
 
 ## What can I do with this
 
